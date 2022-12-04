@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
 
-import '../../resources/svgIcons.dart';
+import '../../../resources/svgIcons.dart';
 
 class ButtonNavigationBar extends StatefulWidget {
   const ButtonNavigationBar({super.key});
@@ -33,8 +33,8 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
         BottomNavigationBarItem(
           label: 'Персонажи',
           icon: SvgPicture.asset(
-            ghost,
-            height: selectedIndex == 0 ? 25 : 22,
+            settings,
+            height: selectedIndex == 0 ? 25 : 23,
             color: selectedIndex == 0 ? AppColors.color43D049 : null,
           ),
         ),
@@ -61,8 +61,8 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
         BottomNavigationBarItem(
           label: 'Настройки',
           icon: SvgPicture.asset(
-            settings,
-            height: selectedIndex == 3 ? 25 : 22,
+            ghost,
+            height: selectedIndex == 3 ? 25 : 23,
             color: selectedIndex == 3
                 ? AppColors.color43D049
                 : AppColors.color5B6975,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty/presentation/characterList.dart';
-import '../../resources/resources.dart';
+import 'package:rick_and_morty/feature/presentation/characterList.dart';
+import '../../../resources/resources.dart';
 
 
 
