@@ -9,14 +9,10 @@ class InfoDio implements UserRepo {
   final Dio dio;
 
   @override
-  Future<AppResponse<UserEntities>> getInfo() async {
+  Future<AppResponse<UserEntities>> getInfo({int? page}) async {
     try {
       final result = await dio.get(
-        'character',
-
-        // queryParameters: {
-        //   'character': character,
-        // },
+        'character?page=$page',
       );
       return AppResponse(model: UserEntities.fromJson(result.data));
     } catch (e) {

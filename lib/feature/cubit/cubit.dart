@@ -7,15 +7,19 @@ class UserCubit extends Cubit<UserState> {
   UserCubit({required this.repo}) : super(InitialState(user: null));
 
   final UserRepo repo;
+  int page = 1;
+  late final List<UserEntities?> userList;
 
   Future<void> getInfo() async {
     emit(LoadingState(user: state.user));
     Future.delayed(const Duration(seconds: 1));
-    final result = await repo.getInfo();
+    final result = await repo.getInfo(page: page);
+    // userList.add(result.model);
+    page++;
     if (result.errorText == null) {
       emit(SuccessState(user: result.model));
     } else {
-      emit(ErrorState(errorText: 'Error Text', user: null));
+      emit(ErrorState(errorText: 'Error Text'));
     }
   }
 }
@@ -44,7 +48,7 @@ class SuccessState extends UserState {
 }
 
 class ErrorState extends UserState {
-  ErrorState({required this.errorText, required this.user}) : super(user: user);
+  ErrorState({required this.errorText, this.user}) : super(user: user);
   final String errorText;
   @override
   final UserEntities? user;

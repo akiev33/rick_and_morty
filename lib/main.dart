@@ -27,9 +27,8 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: BlocProvider(
-        create: (context) => UserCubit(
-          repo: RepositoryProvider.of<InfoDio>(context),
-        )..getInfo(),
+        create: (context) =>
+            UserCubit(repo: RepositoryProvider.of<InfoDio>(context))..getInfo(),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
