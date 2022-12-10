@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/domain/entities/entities.dart';
 
 import '../../domain/repo/user_repo.dart';
+import '../../theme/app_colors.dart';
 
 class UserCubit extends Cubit<UserState> {
   UserCubit({required this.repo}) : super(InitialState(user: null));
@@ -20,6 +21,17 @@ class UserCubit extends Cubit<UserState> {
       emit(SuccessState(user: result.model));
     } else {
       emit(ErrorState(errorText: 'Error Text'));
+    }
+  }
+
+  getColors(int index) {
+    if (state.user?.results?[index].status == 'Alive') {
+      return AppColors.color43D049;
+    }
+    if (state.user?.results?[index].status == 'unknown') {
+      return AppColors.colorGrey;
+    } else {
+      return AppColors.colorEB5757;
     }
   }
 }

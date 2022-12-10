@@ -70,6 +70,7 @@ flutter:
     - assets/images/
     - assets/icons/searchIcon.svg
     - assets/icons/forCube.svg
+    - assets/icons/threeLines.svg
     - assets/icons/tv.svg
     - assets/icons/ghost.svg
     - assets/icons/planet.svg

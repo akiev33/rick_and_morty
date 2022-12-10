@@ -5,10 +5,22 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../resources/svgIcons.dart';
 import '../../../theme/app_colors.dart';
 
-class CharacterCount extends StatelessWidget {
-  const CharacterCount({super.key, required this.countInCharacter});
+class CharacterCount extends StatefulWidget {
+  CharacterCount({
+    super.key,
+    required this.countInCharacter,
+    required this.someFunc,
+  });
 
   final int? countInCharacter;
+  Function(bool value) someFunc;
+
+  @override
+  State<CharacterCount> createState() => _CharacterCountState();
+}
+
+class _CharacterCountState extends State<CharacterCount> {
+  bool isChange = true;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +33,7 @@ class CharacterCount extends StatelessWidget {
           child: FittedBox(
             fit: BoxFit.contain,
             child: Text(
-              'ВСЕГО ПЕРСОНАЖЕЙ: ${(countInCharacter ?? 0).toString()}',
+              'ВСЕГО ПЕРСОНАЖЕЙ: ${(widget.countInCharacter ?? 0).toString()}',
               style: GoogleFonts.roboto(
                 textStyle: TextStyle(
                   fontSize: 10,
@@ -36,9 +48,13 @@ class CharacterCount extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 10),
           child: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              widget.someFunc(isChange = !isChange);
+
+              setState(() {});
+            },
             icon: SvgPicture.asset(
-              forCube,
+              (isChange) ? forCube : threeLines,
               height: 26,
               width: 26,
             ),

@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/feature/cubit/cubit.dart';
 import 'package:rick_and_morty/feature/presentation/buttonNavigationBar/buttonNavigationBar.dart';
+import 'package:rick_and_morty/feature/presentation/characterModel/grid_model.dart';
 import 'package:rick_and_morty/feature/presentation/character_count/character_count.dart';
 import 'package:rick_and_morty/feature/presentation/search_filter/search.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
@@ -34,18 +37,8 @@ class _CharacterListState extends State<CharacterList> {
     );
   }
 
-  getColors(String text) {
-    if (text == 'Alive') {
-      return AppColors.color43D049;
-    }
-    if (text == 'unknown') {
-      return AppColors.colorGrey;
-    } else {
-      return AppColors.colorEB5757;
-    }
-  }
-
   int? countInCharacter;
+  bool isChange = true;
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +53,18 @@ class _CharacterListState extends State<CharacterList> {
               const SizedBox(height: 10),
               const SearchScreen(),
               const SizedBox(height: 10),
-              CharacterCount(countInCharacter: countInCharacter),
+              CharacterCount(
+                countInCharacter: countInCharacter,
+                someFunc: (value) {
+                  isChange = value;
+                  setState(() {});
+                },
+              ),
+              const SizedBox(height: 15),
               BlocConsumer<UserCubit, UserState>(
                 listener: (context, state) {
                   countInCharacter = state.user!.info!.count ?? 0;
+                  log(isChange.toString());
                   setState(() {});
                 },
                 builder: (context, state) {
@@ -87,14 +88,26 @@ class _CharacterListState extends State<CharacterList> {
                     );
                   }
                   return Expanded(
-                    child: ListView.separated(
-                      controller: _controller,
-                      itemBuilder: (context, index) =>
-                          CharacterModel(index: index, state: state),
-                      itemCount: state.user!.results!.length,
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 20),
-                    ),
+                    child: isChange
+                        ? ListView.separated(
+                            controller: _controller,
+                            itemBuilder: (context, index) =>
+                                CharacterModel(index: index, state: state),
+                            itemCount: state.user!.results!.length,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 20),
+                          )
+                        : GridView.builder(
+                            controller: _controller,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 25,
+                            ),
+                            itemCount: state.user!.results!.length,
+                            itemBuilder: (context, index) =>
+                                GridModel(index: index, state: state),
+                          ),
                   );
                 },
               ),
