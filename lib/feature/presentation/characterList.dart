@@ -6,6 +6,7 @@ import 'package:rick_and_morty/feature/cubit/cubit.dart';
 import 'package:rick_and_morty/feature/presentation/buttonNavigationBar/buttonNavigationBar.dart';
 import 'package:rick_and_morty/feature/presentation/characterModel/grid_model.dart';
 import 'package:rick_and_morty/feature/presentation/character_count/character_count.dart';
+import 'package:rick_and_morty/feature/presentation/detail_screen/detail_screen.dart';
 import 'package:rick_and_morty/feature/presentation/search_filter/search.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
 
@@ -91,8 +92,20 @@ class _CharacterListState extends State<CharacterList> {
                     child: isChange
                         ? ListView.separated(
                             controller: _controller,
-                            itemBuilder: (context, index) =>
-                                CharacterModel(index: index, state: state),
+                            itemBuilder: (context, index) => GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailScreen(
+                                      index: index,
+                                      state: state,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: CharacterModel(index: index, state: state),
+                            ),
                             itemCount: state.user!.results!.length,
                             separatorBuilder: (context, index) =>
                                 const SizedBox(height: 20),
@@ -105,8 +118,20 @@ class _CharacterListState extends State<CharacterList> {
                               mainAxisSpacing: 25,
                             ),
                             itemCount: state.user!.results!.length,
-                            itemBuilder: (context, index) =>
-                                GridModel(index: index, state: state),
+                            itemBuilder: (context, index) => GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailScreen(
+                                      index: index,
+                                      state: state,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: GridModel(index: index, state: state),
+                            ),
                           ),
                   );
                 },
