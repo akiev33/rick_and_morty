@@ -11,10 +11,10 @@ class InfoDio implements UserRepo {
   @override
   Future<AppResponse<UserEntities>> getInfo({int? page}) async {
     try {
-      final result = await dio.get(
-        'character?page=$page',
+      final result = await dio.get('character?page=$page');
+      return AppResponse(
+        model: UserEntities.fromJson(result.data),
       );
-      return AppResponse(model: UserEntities.fromJson(result.data));
     } catch (e) {
       if (e is DioError) {
         return AppResponse(
