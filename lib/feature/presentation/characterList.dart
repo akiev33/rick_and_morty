@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/feature/cubit/cubit.dart';
@@ -64,9 +62,10 @@ class _CharacterListState extends State<CharacterList> {
               const SizedBox(height: 15),
               BlocConsumer<UserCubit, UserState>(
                 listener: (context, state) {
-                  countInCharacter = state.user!.info!.count ?? 0;
-                  log(isChange.toString());
-                  setState(() {});
+                  if (state is SuccessState) {
+                    countInCharacter = state.user!.info!.count ?? 0;
+                    setState(() {});
+                  }
                 },
                 builder: (context, state) {
                   if (state is LoadingState) {
@@ -98,8 +97,7 @@ class _CharacterListState extends State<CharacterList> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => DetailScreen(
-                                      index: index,
-                                      state: state,
+                                      id: state.user?.results?[index].id ?? 0,
                                     ),
                                   ),
                                 );
@@ -124,8 +122,7 @@ class _CharacterListState extends State<CharacterList> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => DetailScreen(
-                                      index: index,
-                                      state: state,
+                                      id: state.user?.results?[index].id ?? 0,
                                     ),
                                   ),
                                 );

@@ -1,19 +1,17 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:rick_and_morty/domain/entities/entities_detail_character.dart';
 
 import '../../../theme/app_colors.dart';
-import '../../cubit/cubit.dart';
 
 class AppBarDetail extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
   AppBarDetail({
-    required this.index,
     required this.state,
     required this.expandedHeight,
   });
 
-  final UserState state;
-  final int index;
+  final DetailCharacter state;
 
   @override
   Widget build(
@@ -40,7 +38,7 @@ class AppBarDetail extends SliverPersistentHeaderDelegate {
           child: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage('${state.user?.results?[index].image}'),
+                image: NetworkImage('${state.image}'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -66,8 +64,7 @@ class AppBarDetail extends SliverPersistentHeaderDelegate {
                 backgroundColor: AppColors.color0B1E2D,
                 radius: 70,
                 child: CircleAvatar(
-                  foregroundImage:
-                      NetworkImage('${state.user?.results?[index].image}'),
+                  foregroundImage: NetworkImage('${state.image}'),
                   radius: 88,
                 ),
               ),
