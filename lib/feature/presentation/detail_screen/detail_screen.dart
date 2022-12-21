@@ -2,23 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rick_and_morty/data/repo/dio.dart';
-import 'package:rick_and_morty/feature/cubit/cubit.dart';
 import 'package:rick_and_morty/feature/cubit/cubit_detail_character.dart';
+import 'package:rick_and_morty/feature/cubit/cubit_episods.dart';
 import 'package:rick_and_morty/feature/presentation/appbar_in_detail/appBar_detail.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({super.key, required this.id});
+  const DetailScreen({
+    super.key,
+    required this.id,
+    required this.idEpisods,
+  });
 
   final int id;
+  final List<String> idEpisods;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        lazy: false,
-        create: (context) => DetailCharacterCubit(repo: context.read<InfoDio>())
-          ..getDetailInfo(id: id),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            lazy: false,
+            create: (context) =>
+                DetailCharacterCubit(repo: context.read<InfoDio>())
+                  ..getDetailInfo(id: id),
+          ),
+          BlocProvider(
+            create: (context) =>
+                EpisodsCubit(repo: context.read<InfoDio>())..getEpisods(),
+          ),
+        ],
         child: BlocBuilder<DetailCharacterCubit, DetailCharacterState>(
           builder: (context, state) {
             if (state is DetailCharacterSuccessState) {
@@ -66,10 +80,9 @@ class DetailScreen extends StatelessWidget {
                                       fontWeight: FontWeight.w500,
                                       fontSize: 15,
                                       letterSpacing: 1.5,
-                                      color:
-                                          context.read<UserCubit>().getColors(
-                                                state.detailCharacter.id ?? 0,
-                                              ),
+                                      color: statusColor(
+                                        state.detailCharacter.status ?? '',
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -238,20 +251,73 @@ class DetailScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) => Container(
-                                  height: 75,
-                                  width: double.infinity,
-                                  color: Colors.red,
-                                  child: Row(
-                                    children: const [
-                                      Text(''),
-                                    ],
-                                  ),
-                                ),
-                                itemCount: 1,
+                              BlocBuilder<EpisodsCubit, EpisodsState>(
+                                builder: (context, state) {
+                                  if (state is EpisodsSuccessState) {
+                                    return ListView.separated(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) =>
+                                          Container(
+                                        height: 75,
+                                        width: double.infinity,
+                                        color: AppColors.color152A3A
+                                            .withOpacity(0.70),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Text(
+                                              'Серия ${state.episods?[index].id}',
+                                              style: GoogleFonts.roboto(
+                                                textStyle: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  letterSpacing: 1.5,
+                                                  color: AppColors.color22A2BD
+                                                      .withOpacity(0.87),
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              '${state.episods?[index].name}',
+                                              style: GoogleFonts.roboto(
+                                                textStyle: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w500,
+                                                  letterSpacing: 0.5,
+                                                  color: AppColors.colorFFFFFF,
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              state.episods?[index].airDate ??
+                                                  '',
+                                              style: GoogleFonts.roboto(
+                                                textStyle: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400,
+                                                  letterSpacing: 0.25,
+                                                  color: AppColors.color6E798C
+                                                      .withOpacity(0.60),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      separatorBuilder: (context, index) =>
+                                          const SizedBox(height: 25),
+                                      itemCount: state.episods?.length ?? 0,
+                                    );
+                                  }
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -269,5 +335,16 @@ class DetailScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Color statusColor(String text) {
+    switch (text) {
+      case 'Dead':
+        return AppColors.colorEB5757;
+      case 'Alive':
+        return AppColors.color43D049;
+      default:
+        return AppColors.colorGrey;
+    }
   }
 }

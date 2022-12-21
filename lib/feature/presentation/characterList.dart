@@ -63,7 +63,7 @@ class _CharacterListState extends State<CharacterList> {
               BlocConsumer<UserCubit, UserState>(
                 listener: (context, state) {
                   if (state is SuccessState) {
-                    countInCharacter = state.user!.info!.count ?? 0;
+                    countInCharacter = state.info?.count ?? 0;
                     setState(() {});
                   }
                 },
@@ -97,14 +97,17 @@ class _CharacterListState extends State<CharacterList> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => DetailScreen(
-                                      id: state.user?.results?[index].id ?? 0,
+                                      id: state.user?[index].id ?? 0,
+                                      idEpisods: [
+                                        ...?state.user?[index].episode
+                                      ],
                                     ),
                                   ),
                                 );
                               },
-                              child: CharacterModel(index: index, state: state),
+                              child: CharacterModel(state: state.user?[index]),
                             ),
-                            itemCount: state.user!.results!.length,
+                            itemCount: state.user?.length ?? 0,
                             separatorBuilder: (context, index) =>
                                 const SizedBox(height: 20),
                           )
@@ -115,19 +118,24 @@ class _CharacterListState extends State<CharacterList> {
                               crossAxisCount: 2,
                               mainAxisSpacing: 25,
                             ),
-                            itemCount: state.user!.results!.length,
+                            itemCount: state.user?.length ?? 0,
                             itemBuilder: (context, index) => GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => DetailScreen(
-                                      id: state.user?.results?[index].id ?? 0,
+                                      id: state.user?[index].id ?? 0,
+                                      idEpisods: [
+                                        ...?state.user?[index].episode
+                                      ],
                                     ),
                                   ),
                                 );
                               },
-                              child: GridModel(index: index, state: state),
+                              child: GridModel(
+                                state: state.user?[index],
+                              ),
                             ),
                           ),
                   );

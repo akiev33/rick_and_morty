@@ -13,7 +13,7 @@ class EpisodsCubit extends Cubit<EpisodsState> {
     final episods = await repo.getEpisods();
     if (episods.errorText == null) {
       emit(
-        EpisodsSuccessState(episods: episods.model ?? Episods()),
+        EpisodsSuccessState(episods: episods.model?.results ?? []),
       );
     } else {
       emit(EpisodsErrorState(errorText: episods.errorText ?? ''));
@@ -29,7 +29,7 @@ class EpisodsLoadingState extends EpisodsState {}
 
 class EpisodsSuccessState extends EpisodsState {
   EpisodsSuccessState({required this.episods});
-  final Episods episods;
+  final List<Results>? episods;
 }
 
 class EpisodsErrorState extends EpisodsState {

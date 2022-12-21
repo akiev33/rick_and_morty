@@ -1,17 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../domain/entities/entities.dart';
 import '../../../resources/resources.dart';
 import '../../../theme/app_colors.dart';
-import '../../cubit/cubit.dart';
 
 class GridModel extends StatefulWidget {
-  const GridModel({super.key, required this.index, required this.state});
+  const GridModel({super.key, required this.state});
 
-  final UserState state;
-  final int index;
+  final Results? state;
 
   @override
   State<GridModel> createState() => _GridModelState();
@@ -32,7 +30,7 @@ class _GridModelState extends State<GridModel> {
             alignment: Alignment.center,
             decoration: const BoxDecoration(shape: BoxShape.circle),
             child: Image.network(
-              '${widget.state.user?.results?[widget.index].image}',
+              '${widget.state?.image}',
               fit: BoxFit.cover,
               errorBuilder: (context, object, trace) {
                 return Image.asset(Images.imageError2);
@@ -41,13 +39,14 @@ class _GridModelState extends State<GridModel> {
           ),
           const SizedBox(height: 18),
           Text(
-            '${widget.state.user?.results?[widget.index].status}',
+            '${widget.state?.status}',
             style: GoogleFonts.roboto(
               textStyle: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15,
-                  letterSpacing: 1.5,
-                  color: context.read<UserCubit>().getColors(widget.index)),
+                fontWeight: FontWeight.w500,
+                fontSize: 15,
+                letterSpacing: 1.5,
+                color: statusColor(widget.state?.status ?? ''),
+              ),
             ),
           ),
           const SizedBox(height: 4),
@@ -55,7 +54,7 @@ class _GridModelState extends State<GridModel> {
             height: 20,
             width: 164,
             child: AutoSizeText(
-              '${widget.state.user?.results?[widget.index].name}',
+              '${widget.state?.name}',
               minFontSize: 1,
               maxLines: 2,
               textAlign: TextAlign.center,
@@ -71,7 +70,7 @@ class _GridModelState extends State<GridModel> {
           ),
           const SizedBox(height: 2),
           Text(
-            '${widget.state.user?.results?[widget.index].species}, ${widget.state.user?.results?[widget.index].gender}',
+            '${widget.state?.species}, ${widget.state?.gender}',
             style: GoogleFonts.roboto(
               textStyle: TextStyle(
                 fontSize: 12,
@@ -84,5 +83,16 @@ class _GridModelState extends State<GridModel> {
         ],
       ),
     );
+  }
+
+  Color statusColor(String text) {
+    switch (text) {
+      case 'Dead':
+        return AppColors.colorEB5757;
+      case 'Alive':
+        return AppColors.color43D049;
+      default:
+        return AppColors.colorGrey;
+    }
   }
 }
