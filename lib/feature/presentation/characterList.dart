@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:rick_and_morty/feature/cubit/cubit.dart';
 import 'package:rick_and_morty/feature/presentation/buttonNavigationBar/buttonNavigationBar.dart';
 import 'package:rick_and_morty/feature/presentation/characterModel/grid_model.dart';
@@ -43,6 +44,7 @@ class _CharacterListState extends State<CharacterList> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: const ButtonNavigationBar(),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -84,7 +86,25 @@ class _CharacterListState extends State<CharacterList> {
                   }
                   if (state is ErrorState) {
                     return Center(
-                      child: Image.asset(Images.rickNoInternet),
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            Images.ogyr4ikRick,
+                            scale: 5,
+                          ),
+                          Text(
+                            '''- I don't know what happened,\nbut something broke!''',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.roboto(
+                              textStyle: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.colorFFFFFF.withOpacity(0.7),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     );
                   }
                   return Expanded(

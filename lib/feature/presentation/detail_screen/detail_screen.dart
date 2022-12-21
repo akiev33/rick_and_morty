@@ -312,9 +312,7 @@ class DetailScreen extends StatelessWidget {
                                       itemCount: state.episods?.length ?? 0,
                                     );
                                   }
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
+                                  return const SizedBox();
                                 },
                               ),
                             ],
@@ -326,8 +324,10 @@ class DetailScreen extends StatelessWidget {
                 ],
               );
             }
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: CircularProgressIndicator.adaptive(
+                backgroundColor: AppColors.color43D049,
+              ),
             );
           },
         ),
