@@ -11,11 +11,9 @@ class DetailScreen extends StatelessWidget {
   const DetailScreen({
     super.key,
     required this.id,
-    required this.idEpisods,
   });
 
   final int id;
-  final List<String> idEpisods;
 
   @override
   Widget build(BuildContext context) {

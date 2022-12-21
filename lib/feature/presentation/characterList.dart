@@ -98,9 +98,6 @@ class _CharacterListState extends State<CharacterList> {
                                   MaterialPageRoute(
                                     builder: (context) => DetailScreen(
                                       id: state.user?[index].id ?? 0,
-                                      idEpisods: [
-                                        ...?state.user?[index].episode
-                                      ],
                                     ),
                                   ),
                                 );
@@ -126,9 +123,6 @@ class _CharacterListState extends State<CharacterList> {
                                   MaterialPageRoute(
                                     builder: (context) => DetailScreen(
                                       id: state.user?[index].id ?? 0,
-                                      idEpisods: [
-                                        ...?state.user?[index].episode
-                                      ],
                                     ),
                                   ),
                                 );
