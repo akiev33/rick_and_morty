@@ -7,6 +7,8 @@ import 'package:rick_and_morty/feature/cubit/cubit_episods.dart';
 import 'package:rick_and_morty/feature/presentation/appbar_in_detail/appBar_detail.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
 
+import '../../../resources/resources.dart';
+
 class DetailScreen extends StatelessWidget {
   const DetailScreen({
     super.key,
@@ -322,6 +324,30 @@ class DetailScreen extends StatelessWidget {
                     ),
                   ),
                 ],
+              );
+            }
+            if (state is DetailCharacterErrorState) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      Images.ogyr4ikRick,
+                      scale: 5,
+                    ),
+                    Text(
+                      '''- I don't know what happened,\nbut something broke!''',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.roboto(
+                        textStyle: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.colorFFFFFF.withOpacity(0.7),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               );
             }
             return Center(
