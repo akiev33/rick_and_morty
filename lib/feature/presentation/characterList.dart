@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,8 +40,9 @@ class _CharacterListState extends State<CharacterList> {
           if (notif.metrics.pixels + 350 > notif.metrics.maxScrollExtent &&
               canLoad) {
             canLoad = false;
+            log(filterEntity.value.currentPage.toString());
             filterEntity.value = filterEntity.value
-                .copyWith(currentPage: filterEntity.value.currentPage ?? 1 + 1);
+                .copyWith(currentPage: filterEntity.value.currentPage! + 1);
             context.read<UserCubit>().getInfo(
                   filterModel: filterEntity.value,
                 );
@@ -55,7 +58,8 @@ class _CharacterListState extends State<CharacterList> {
                 const SizedBox(height: 10),
                 SearchScreen(
                   onSearch: (name) {
-                    filterEntity.value = FilterEntity(searchText: name);
+                    filterEntity.value =
+                        filterEntity.value.copyWith(searchText: name);
                     BlocProvider.of<UserCubit>(context)
                         .getInfo(filterModel: filterEntity.value);
                   },

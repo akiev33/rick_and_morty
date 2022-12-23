@@ -11,8 +11,14 @@ class UserCubit extends Cubit<UserState> {
   List<Results> newUsers = [];
   int currentPage = 1;
   int maxPage = 1;
+  FilterEntity filterEntity = FilterEntity();
 
   Future<void> getInfo({required FilterEntity filterModel}) async {
+    if (filterModel != filterEntity) {
+      currentPage = 1;
+      newUsers.clear();
+    }
+
     if (newUsers.isEmpty) {
       emit(LoadingState(user: state.user));
     }
@@ -23,6 +29,7 @@ class UserCubit extends Cubit<UserState> {
       if (result.errorText == null) {
         currentPage = filterModel.currentPage ?? 1;
         maxPage = result.model?.info?.pages ?? 1;
+        filterModel = filterEntity;
         newUsers.addAll(result.model?.results ?? []);
         emit(
           SuccessState(
