@@ -1,10 +1,11 @@
 import 'package:rick_and_morty/domain/entities/entities.dart';
 import 'package:rick_and_morty/domain/entities/entities_detail_character.dart';
+import 'package:rick_and_morty/domain/entities/filters_characters_entities.dart';
 
 import '../entities/entities_episods.dart';
 
 abstract class UserRepo {
-  Future<AppResponse<UserEntities>> getInfo({int? page});
+  Future<AppResponse<UserEntities>> getInfo({required FilterEntity filterEntity});
   Future<AppResponse<DetailCharacter>> getDetailInfo({required int? id});
   Future<AppResponse<Episods>> getEpisods();
 }

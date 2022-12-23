@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/data/network/dio_settings.dart';
 import 'package:rick_and_morty/data/repo/dio.dart';
+import 'package:rick_and_morty/domain/entities/filters_characters_entities.dart';
 import 'package:rick_and_morty/feature/cubit/cubit.dart';
 import 'package:rick_and_morty/feature/presentation/start_screen.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocProvider(
         create: (context) =>
-            UserCubit(repo: RepositoryProvider.of<InfoDio>(context))..getInfo(),
+            UserCubit(repo: RepositoryProvider.of<InfoDio>(context))
+              ..getInfo(filterModel: FilterEntity()),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(

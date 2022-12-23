@@ -31,7 +31,7 @@ class AppBarDetail extends SliverPersistentHeaderDelegate {
                 ],
                 stops: const [
                   0.4,
-                  0.75
+                  0.75,
                 ]).createShader(rect);
           },
           blendMode: BlendMode.dstOut,
@@ -43,7 +43,7 @@ class AppBarDetail extends SliverPersistentHeaderDelegate {
               ),
             ),
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
+              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 1),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.0),

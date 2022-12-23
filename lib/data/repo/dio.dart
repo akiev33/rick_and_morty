@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:rick_and_morty/domain/entities/entities_detail_character.dart';
+import 'package:rick_and_morty/domain/entities/filters_characters_entities.dart';
 
 import '../../domain/entities/entities.dart';
 import '../../domain/entities/entities_episods.dart';
@@ -11,9 +12,14 @@ class InfoDio implements UserRepo {
   final Dio dio;
 
   @override
-  Future<AppResponse<UserEntities>> getInfo({int? page}) async {
+  Future<AppResponse<UserEntities>> getInfo(
+      {required FilterEntity filterEntity}) async {
     try {
-      final result = await dio.get('character?page=$page');
+      final result = await dio.get(
+        'character/',
+        queryParameters: {'page': filterEntity.currentPage},
+      );
+
       return AppResponse(
         model: UserEntities.fromJson(result.data),
       );

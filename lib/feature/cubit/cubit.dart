@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/domain/entities/entities.dart';
+import 'package:rick_and_morty/domain/entities/filters_characters_entities.dart';
 
 import '../../domain/repo/user_repo.dart';
 
@@ -7,20 +8,32 @@ class UserCubit extends Cubit<UserState> {
   UserCubit({required this.repo}) : super(InitialState(user: []));
 
   final UserRepo repo;
-  int page = 1;
+  List<Results> newUsers = [];
+  int currentPage = 1;
+  int maxPage = 1;
 
-  Future<void> getInfo() async {
-    emit(LoadingState(user: state.user));
-    Future.delayed(const Duration(seconds: 1));
-    final result = await repo.getInfo(page: page);
-    page++;
-    if (result.errorText == null) {
-      emit(SuccessState(
-        user: result.model?.results ?? [],
-        info: result.model?.info ?? Info(),
-      ));
-    } else {
-      emit(ErrorState(errorText: result.errorText ?? ''));
+  Future<void> getInfo({required FilterEntity filterModel}) async {
+    if (newUsers.isEmpty) {
+      emit(LoadingState(user: state.user));
+    }
+
+    if (currentPage <= maxPage) {
+      final result = await repo.getInfo(filterEntity: filterModel);
+      emit(SuccessState(user: newUsers, isLoading: true));
+      if (result.errorText == null) {
+        currentPage = filterModel.currentPage ?? 1;
+        maxPage = result.model?.info?.pages ?? 1;
+        newUsers.addAll(result.model?.results ?? []);
+        emit(
+          SuccessState(
+            user: newUsers,
+            info: result.model?.info ?? Info(),
+            isLoading: false,
+          ),
+        );
+      } else {
+        emit(ErrorState(errorText: result.errorText ?? ''));
+      }
     }
   }
 }
@@ -46,7 +59,9 @@ class SuccessState extends UserState {
   @override
   final List<Results>? user;
   final Info? info;
-  SuccessState({required this.user, this.info}) : super(user: user);
+  final bool isLoading;
+  SuccessState({required this.user, this.info, this.isLoading = false})
+      : super(user: user);
 }
 
 class ErrorState extends UserState {
