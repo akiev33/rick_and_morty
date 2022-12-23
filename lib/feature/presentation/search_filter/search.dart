@@ -8,7 +8,9 @@ import '../../../resources/svgIcons.dart';
 import '../../../theme/app_colors.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+  const SearchScreen({super.key, required this.onSearch});
+
+  final Function(String name) onSearch;
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -20,7 +22,9 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onChanged: (value) {},
+      onSubmitted: (e) {
+        widget.onSearch(_controller.text);
+      },
       controller: _controller,
       style: TextStyle(color: AppColors.colorFFFFFF),
       decoration: InputDecoration(

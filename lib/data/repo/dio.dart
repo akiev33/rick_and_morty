@@ -17,7 +17,10 @@ class InfoDio implements UserRepo {
     try {
       final result = await dio.get(
         'character/',
-        queryParameters: {'page': filterEntity.currentPage},
+        queryParameters: {
+          'page': filterEntity.currentPage,
+          'name': filterEntity.searchText,
+        },
       );
 
       return AppResponse(

@@ -19,7 +19,7 @@ class UserCubit extends Cubit<UserState> {
 
     if (currentPage <= maxPage) {
       final result = await repo.getInfo(filterEntity: filterModel);
-      emit(SuccessState(user: newUsers, isLoading: true));
+
       if (result.errorText == null) {
         currentPage = filterModel.currentPage ?? 1;
         maxPage = result.model?.info?.pages ?? 1;
@@ -32,7 +32,7 @@ class UserCubit extends Cubit<UserState> {
           ),
         );
       } else {
-        emit(ErrorState(errorText: result.errorText ?? ''));
+        emit(ErrorState(errorText: result.errorText ?? '', user: []));
       }
     }
   }
@@ -68,5 +68,5 @@ class ErrorState extends UserState {
   @override
   final List<Results>? user;
   final String errorText;
-  ErrorState({required this.errorText, this.user}) : super(user: user);
+  ErrorState({required this.errorText, required this.user}) : super(user: user);
 }

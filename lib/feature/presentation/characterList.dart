@@ -21,7 +21,7 @@ class CharacterList extends StatefulWidget {
 }
 
 class _CharacterListState extends State<CharacterList> {
-  late final filterEntity = ValueNotifier<FilterEntity>(
+  final filterEntity = ValueNotifier<FilterEntity>(
     FilterEntity(currentPage: 1),
   );
   bool canLoad = true;
@@ -35,12 +35,14 @@ class _CharacterListState extends State<CharacterList> {
       resizeToAvoidBottomInset: false,
       body: NotificationListener(
         onNotification: (ScrollNotification notif) {
-          if (notif.metrics.pixels + 250 > notif.metrics.maxScrollExtent &&
+          if (notif.metrics.pixels + 350 > notif.metrics.maxScrollExtent &&
               canLoad) {
             canLoad = false;
-            filterEntity.value =
-                FilterEntity(currentPage: filterEntity.value.currentPage! + 1);
-            context.read<UserCubit>().getInfo(filterModel: filterEntity.value);
+            filterEntity.value = filterEntity.value
+                .copyWith(currentPage: filterEntity.value.currentPage ?? 1 + 1);
+            context.read<UserCubit>().getInfo(
+                  filterModel: filterEntity.value,
+                );
           }
           return true;
         },
@@ -51,7 +53,13 @@ class _CharacterListState extends State<CharacterList> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 10),
-                const SearchScreen(),
+                SearchScreen(
+                  onSearch: (name) {
+                    filterEntity.value = FilterEntity(searchText: name);
+                    BlocProvider.of<UserCubit>(context)
+                        .getInfo(filterModel: filterEntity.value);
+                  },
+                ),
                 const SizedBox(height: 10),
                 CharacterCount(
                   countInCharacter: countInCharacter,
