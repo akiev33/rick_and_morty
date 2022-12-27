@@ -1,9 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../domain/entities/entities.dart';
-import '../../../resources/resources.dart';
 import '../../../theme/app_colors.dart';
 
 class CharacterModel extends StatefulWidget {
@@ -26,12 +26,13 @@ class _CharacterModelState extends State<CharacterModel> {
           width: 74,
           alignment: Alignment.center,
           decoration: const BoxDecoration(shape: BoxShape.circle),
-          child: Image.network(
-            '${widget.state?.image}',
+          child: CachedNetworkImage(
+            imageUrl: '${widget.state?.image}',
             fit: BoxFit.cover,
-            errorBuilder: (context, object, trace) {
-              return Image.asset(Images.imageError2);
-            },
+            placeholder: (context, url) => CircularProgressIndicator.adaptive(
+              backgroundColor: AppColors.color43D049,
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
         const SizedBox(width: 18),

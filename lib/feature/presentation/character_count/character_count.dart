@@ -6,14 +6,14 @@ import '../../../resources/svgIcons.dart';
 import '../../../theme/app_colors.dart';
 
 class CharacterCount extends StatefulWidget {
-  CharacterCount({
+  const CharacterCount({
     super.key,
     required this.countInCharacter,
     required this.someFunc,
   });
 
   final int? countInCharacter;
-  Function(bool value) someFunc;
+  final Function(bool value) someFunc;
 
   @override
   State<CharacterCount> createState() => _CharacterCountState();

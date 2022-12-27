@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/domain/entities/entities_detail_character.dart';
 
@@ -38,7 +39,7 @@ class AppBarDetail extends SliverPersistentHeaderDelegate {
           child: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage('${state.image}'),
+                image: CachedNetworkImageProvider('${state.image}'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -64,7 +65,7 @@ class AppBarDetail extends SliverPersistentHeaderDelegate {
                 backgroundColor: AppColors.color0B1E2D,
                 radius: 70,
                 child: CircleAvatar(
-                  foregroundImage: NetworkImage('${state.image}'),
+                  foregroundImage: CachedNetworkImageProvider('${state.image}'),
                   radius: 88,
                 ),
               ),

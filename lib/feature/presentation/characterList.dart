@@ -8,8 +8,7 @@ import 'package:rick_and_morty/feature/presentation/character_count/character_co
 import 'package:rick_and_morty/feature/presentation/detail_screen/detail_screen.dart';
 import 'package:rick_and_morty/feature/presentation/error_image/error_search_and_error.dart';
 import 'package:rick_and_morty/feature/presentation/search_filter/search.dart';
-import 'package:rick_and_morty/theme/app_colors.dart';
-
+import '../../theme/app_colors.dart';
 import 'characterModel/characterModel.dart';
 
 class CharacterList extends StatefulWidget {
@@ -76,8 +75,6 @@ class _CharacterListState extends State<CharacterList> {
                         await Future.delayed(const Duration(microseconds: 400));
                         canLoad = true;
                       }
-                    }
-                    if (state is SuccessState) {
                       countInCharacter = state.info?.count ?? 0;
                       setState(() {});
                     }
@@ -86,68 +83,63 @@ class _CharacterListState extends State<CharacterList> {
                     if (state is ErrorState) {
                       return ErrorImage(error: state.errorText);
                     }
-                    if (state is SuccessState) {
-                      return Expanded(
-                        child: isChange
-                            ? ListView.separated(
-                                itemBuilder: (context, index) =>
-                                    GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => DetailScreen(
-                                          id: state.user?[index].id ?? 0,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: CharacterModel(
-                                    state: state.user![index],
-                                  ),
-                                ),
-                                itemCount: state.user?.length ?? 0,
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(height: 20),
-                              )
-                            : GridView.builder(
-                                // controller: _controller,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 25,
-                                ),
-                                itemCount: state.user?.length ?? 0,
-                                itemBuilder: (context, index) =>
-                                    GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => DetailScreen(
-                                          id: state.user?[index].id ?? 0,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: GridModel(
-                                    state: state.user![index],
-                                  ),
-                                ),
-                              ),
+                    if (state is LoadingState) {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height / 1.5,
+                        child: Center(
+                          child: CircularProgressIndicator.adaptive(
+                            backgroundColor: AppColors.color43D049,
+                          ),
+                        ),
                       );
                     }
+
                     return Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: CircularProgressIndicator.adaptive(
-                              backgroundColor: AppColors.color43D049,
+                      child: isChange
+                          ? ListView.separated(
+                              itemBuilder: (context, index) => GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailScreen(
+                                        id: state.user?[index].id ?? 0,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: CharacterModel(
+                                  state: state.user![index],
+                                ),
+                              ),
+                              itemCount: state.user?.length ?? 0,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 20),
+                            )
+                          : GridView.builder(
+                              // controller: _controller,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 25,
+                              ),
+                              itemCount: state.user?.length ?? 0,
+                              itemBuilder: (context, index) => GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailScreen(
+                                        id: state.user?[index].id ?? 0,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: GridModel(
+                                  state: state.user![index],
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
                     );
                   },
                 ),

@@ -6,9 +6,20 @@ import 'package:rick_and_morty/domain/entities/filters_characters_entities.dart'
 import 'package:rick_and_morty/feature/cubit/cubit.dart';
 import 'package:rick_and_morty/feature/presentation/start_screen.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
+import 'dart:io';
 
 void main() {
   runApp(const MyApp());
+  HttpOverrides.global = MyHttpOverrides();
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
 }
 
 class MyApp extends StatelessWidget {

@@ -16,7 +16,6 @@ class UserCubit extends Cubit<UserState> {
   Future<void> getInfo({required FilterEntity filterModel}) async {
     if (filterModel != filterEntity) {
       currentPage = 1;
-      emit(LoadingState(user: []));
       newUsers.clear();
     }
 
