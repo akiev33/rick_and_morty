@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -40,9 +38,8 @@ class _CharacterListState extends State<CharacterList> {
           if (notif.metrics.pixels + 350 > notif.metrics.maxScrollExtent &&
               canLoad) {
             canLoad = false;
-            log(filterEntity.value.currentPage.toString());
             filterEntity.value = filterEntity.value
-                .copyWith(currentPage: filterEntity.value.currentPage! + 1);
+                .copyWith(currentPage: filterEntity.value.currentPage ?? 1 + 1);
             context.read<UserCubit>().getInfo(
                   filterModel: filterEntity.value,
                 );
@@ -87,20 +84,6 @@ class _CharacterListState extends State<CharacterList> {
                     }
                   },
                   builder: (context, state) {
-                    if (state is LoadingState) {
-                      return Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: CircularProgressIndicator.adaptive(
-                                backgroundColor: AppColors.color43D049,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
                     if (state is ErrorState) {
                       return Center(
                         child: Column(
@@ -124,52 +107,69 @@ class _CharacterListState extends State<CharacterList> {
                         ),
                       );
                     }
-                    return Expanded(
-                      child: isChange
-                          ? ListView.separated(
-                              // controller: _controller,
-                              itemBuilder: (context, index) => GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DetailScreen(
-                                        id: state.user?[index].id ?? 0,
+                    if (state is SuccessState) {
+                      return Expanded(
+                        child: isChange
+                            ? ListView.separated(
+                                // controller: _controller,
+                                itemBuilder: (context, index) =>
+                                    GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DetailScreen(
+                                          id: state.user?[index].id ?? 0,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                child:
-                                    CharacterModel(state: state.user?[index]),
-                              ),
-                              itemCount: state.user?.length ?? 0,
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(height: 20),
-                            )
-                          : GridView.builder(
-                              // controller: _controller,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 25,
-                              ),
-                              itemCount: state.user?.length ?? 0,
-                              itemBuilder: (context, index) => GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DetailScreen(
-                                        id: state.user?[index].id ?? 0,
+                                    );
+                                  },
+                                  child: CharacterModel(
+                                    state: state.user![index],
+                                  ),
+                                ),
+                                itemCount: state.user?.length ?? 0,
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: 20),
+                              )
+                            : GridView.builder(
+                                // controller: _controller,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 25,
+                                ),
+                                itemCount: state.user?.length ?? 0,
+                                itemBuilder: (context, index) =>
+                                    GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DetailScreen(
+                                          id: state.user?[index].id ?? 0,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                child: GridModel(
-                                  state: state.user?[index],
+                                    );
+                                  },
+                                  child: GridModel(
+                                    state: state.user![index],
+                                  ),
                                 ),
                               ),
+                      );
+                    }
+                    return Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: CircularProgressIndicator.adaptive(
+                              backgroundColor: AppColors.color43D049,
                             ),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),

@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 class FilterEntity {
-  final int? currentPage;
+  late final int? currentPage;
   final int? maxPage;
   final String? searchText;
   FilterEntity({

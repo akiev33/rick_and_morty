@@ -9,28 +9,33 @@ class UserCubit extends Cubit<UserState> {
 
   final UserRepo repo;
   List<Results> newUsers = [];
+  FilterEntity filterEntity = FilterEntity();
   int currentPage = 1;
   int maxPage = 1;
-  FilterEntity filterEntity = FilterEntity();
 
   Future<void> getInfo({required FilterEntity filterModel}) async {
     if (filterModel != filterEntity) {
       currentPage = 1;
       newUsers.clear();
     }
+    // if (newUsers.isEmpty) {
+    //   emit(LoadingState(user: state.user));
+    // }
 
-    if (newUsers.isEmpty) {
-      emit(LoadingState(user: state.user));
-    }
+    // currentPage = filterModel.currentPage ?? 1;
 
     if (currentPage <= maxPage) {
-      final result = await repo.getInfo(filterEntity: filterModel);
+      final result = await repo.getInfo(
+        filterEntity: filterModel.copyWith(currentPage: currentPage),
+      );
 
       if (result.errorText == null) {
-        currentPage = filterModel.currentPage ?? 1;
         maxPage = result.model?.info?.pages ?? 1;
-        filterModel = filterEntity;
+        filterEntity = filterModel;
+        currentPage++;
+
         newUsers.addAll(result.model?.results ?? []);
+
         emit(
           SuccessState(
             user: newUsers,
