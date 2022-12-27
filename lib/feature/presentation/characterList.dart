@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:rick_and_morty/domain/entities/filters_characters_entities.dart';
 import 'package:rick_and_morty/feature/cubit/cubit.dart';
 import 'package:rick_and_morty/feature/presentation/buttonNavigationBar/buttonNavigationBar.dart';
 import 'package:rick_and_morty/feature/presentation/characterModel/grid_model.dart';
 import 'package:rick_and_morty/feature/presentation/character_count/character_count.dart';
 import 'package:rick_and_morty/feature/presentation/detail_screen/detail_screen.dart';
+import 'package:rick_and_morty/feature/presentation/error_image/error_search_and_error.dart';
 import 'package:rick_and_morty/feature/presentation/search_filter/search.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
 
-import '../../resources/resources.dart';
 import 'characterModel/characterModel.dart';
 
 class CharacterList extends StatefulWidget {
@@ -85,33 +84,12 @@ class _CharacterListState extends State<CharacterList> {
                   },
                   builder: (context, state) {
                     if (state is ErrorState) {
-                      return Center(
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              Images.ogyr4ikRick,
-                              scale: 5,
-                            ),
-                            Text(
-                              '''- I don't know what happened,\nbut something broke!''',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.roboto(
-                                textStyle: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.colorFFFFFF.withOpacity(0.7),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
+                      return ErrorImage(error: state.errorText);
                     }
                     if (state is SuccessState) {
                       return Expanded(
                         child: isChange
                             ? ListView.separated(
-                                // controller: _controller,
                                 itemBuilder: (context, index) =>
                                     GestureDetector(
                                   onTap: () {

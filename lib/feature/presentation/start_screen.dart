@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:rick_and_morty/feature/presentation/characterList.dart';
 import '../../../resources/resources.dart';
 
-
-
-
-
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
 
