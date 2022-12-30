@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -44,14 +45,18 @@ class ErrorImage extends StatelessWidget {
                   Images.ogyr4ikRick,
                   scale: 5,
                 ),
-                Text(
-                  '''- I don't know what happened,\nbut something broke!''',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.roboto(
-                    textStyle: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.colorFFFFFF.withOpacity(0.7),
+                SizedBox(
+                  height: 100,
+                  width: double.infinity,
+                  child: AutoSizeText(
+                    '$error',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.roboto(
+                      textStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.colorFFFFFF.withOpacity(0.7),
+                      ),
                     ),
                   ),
                 ),

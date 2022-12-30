@@ -97,6 +97,7 @@ class _CharacterListState extends State<CharacterList> {
                     return Expanded(
                       child: isChange
                           ? ListView.separated(
+                              itemCount: state.user?.length ?? 0,
                               itemBuilder: (context, index) => GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -112,7 +113,6 @@ class _CharacterListState extends State<CharacterList> {
                                   state: state.user![index],
                                 ),
                               ),
-                              itemCount: state.user?.length ?? 0,
                               separatorBuilder: (context, index) =>
                                   const SizedBox(height: 20),
                             )

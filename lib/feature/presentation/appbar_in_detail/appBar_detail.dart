@@ -66,6 +66,7 @@ class AppBarDetail extends SliverPersistentHeaderDelegate {
                 radius: 70,
                 child: CircleAvatar(
                   foregroundImage: CachedNetworkImageProvider('${state.image}'),
+                  backgroundColor: AppColors.color5B6975,
                   radius: 88,
                 ),
               ),
