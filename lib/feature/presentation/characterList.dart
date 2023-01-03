@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/domain/entities/filters_characters_entities.dart';
 import 'package:rick_and_morty/feature/cubit/cubit.dart';
-import 'package:rick_and_morty/feature/presentation/buttonNavigationBar/buttonNavigationBar.dart';
 import 'package:rick_and_morty/feature/presentation/characterModel/grid_model.dart';
 import 'package:rick_and_morty/feature/presentation/character_count/character_count.dart';
 import 'package:rick_and_morty/feature/presentation/detail_screen/detail_screen.dart';
 import 'package:rick_and_morty/feature/presentation/error_image/error_search_and_error.dart';
 import 'package:rick_and_morty/feature/presentation/search_filter/search.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../theme/app_colors.dart';
 import 'characterModel/characterModel.dart';
 
@@ -19,12 +19,25 @@ class CharacterList extends StatefulWidget {
 }
 
 class _CharacterListState extends State<CharacterList> {
-  final filterEntity = ValueNotifier<FilterEntity>(
-    FilterEntity(currentPage: 1),
-  );
+  final pageScroll = const PageStorageKey<String>('page');
+  final filterEntity =
+      ValueNotifier<FilterEntity>(FilterEntity(currentPage: 1));
   bool canLoad = true;
   int? countInCharacter;
   bool isChange = true;
+  late final SharedPreferences prefs;
+
+  @override
+  void initState() {
+    initPrefs();
+    super.initState();
+  }
+
+  void initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    countInCharacter = prefs.getInt('counter');
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +87,7 @@ class _CharacterListState extends State<CharacterList> {
                         await Future.delayed(const Duration(microseconds: 400));
                         canLoad = true;
                       }
-                      countInCharacter = state.info?.count ?? 0;
+                      await prefs.setInt('counter', state.info?.count ?? 0);
                       setState(() {});
                     }
                   },
@@ -96,6 +109,7 @@ class _CharacterListState extends State<CharacterList> {
                     return Expanded(
                       child: isChange
                           ? ListView.separated(
+                              key: pageScroll,
                               itemCount: state.user?.length ?? 0,
                               itemBuilder: (context, index) => GestureDetector(
                                 onTap: () {
@@ -116,7 +130,7 @@ class _CharacterListState extends State<CharacterList> {
                                   const SizedBox(height: 20),
                             )
                           : GridView.builder(
-                              // controller: _controller,
+                              key: pageScroll,
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
