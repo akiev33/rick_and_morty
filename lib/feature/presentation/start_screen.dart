@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty/feature/presentation/characterList.dart';
+import 'package:rick_and_morty/feature/presentation/buttonNavigationBar/buttonNavigationBar.dart';
 import '../../../resources/resources.dart';
 
 class StartScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class _StartScreenState extends State<StartScreen> {
       () => Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-          pageBuilder: (_, __, ___) => const CharacterList(),
+          pageBuilder: (_, __, ___) => const ButtonNavigationBar(),
           transitionDuration: const Duration(milliseconds: 600),
           transitionsBuilder: (_, a, __, c) =>
               FadeTransition(opacity: a, child: c),

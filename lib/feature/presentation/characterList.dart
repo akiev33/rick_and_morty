@@ -29,7 +29,6 @@ class _CharacterListState extends State<CharacterList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const ButtonNavigationBar(),
       resizeToAvoidBottomInset: false,
       body: NotificationListener(
         onNotification: (ScrollNotification notif) {
