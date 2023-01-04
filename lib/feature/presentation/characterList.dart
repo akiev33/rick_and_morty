@@ -7,7 +7,6 @@ import 'package:rick_and_morty/feature/presentation/character_count/character_co
 import 'package:rick_and_morty/feature/presentation/detail_screen/detail_screen.dart';
 import 'package:rick_and_morty/feature/presentation/error_image/error_search_and_error.dart';
 import 'package:rick_and_morty/feature/presentation/search_filter/search.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../theme/app_colors.dart';
 import 'characterModel/characterModel.dart';
 
@@ -25,19 +24,6 @@ class _CharacterListState extends State<CharacterList> {
   bool canLoad = true;
   int? countInCharacter;
   bool isChange = true;
-  late final SharedPreferences prefs;
-
-  @override
-  void initState() {
-    initPrefs();
-    super.initState();
-  }
-
-  void initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
-    countInCharacter = prefs.getInt('counter');
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,10 +70,10 @@ class _CharacterListState extends State<CharacterList> {
                   listener: (context, state) async {
                     if (state is SuccessState) {
                       if (!state.isLoading) {
-                        await Future.delayed(const Duration(microseconds: 400));
+                        await Future.delayed(const Duration(milliseconds: 100));
                         canLoad = true;
                       }
-                      await prefs.setInt('counter', state.info?.count ?? 0);
+                      countInCharacter = state.info?.count ?? 0;
                       setState(() {});
                     }
                   },

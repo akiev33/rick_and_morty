@@ -18,13 +18,6 @@ class ButtonNavigationBar extends StatefulWidget {
 class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
   int selectedIndex = 0;
 
-  static const List<Widget> _pages = <Widget>[
-    CharacterList(),
-    LocationList(),
-    EpisodsList(),
-    SettingScreen(),
-  ];
-
   void _onItemTapped(int index) {
     if (selectedIndex == index) return;
     setState(() {
@@ -35,7 +28,15 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[selectedIndex],
+      body: IndexedStack(
+        index: selectedIndex,
+        children: const [
+          CharacterList(),
+          LocationList(),
+          EpisodsList(),
+          SettingScreen(),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppColors.color152A3A,
         selectedItemColor: AppColors.color43D049,

@@ -50,7 +50,6 @@ class _CharacterCountState extends State<CharacterCount> {
           child: IconButton(
             onPressed: () {
               widget.someFunc(isChange = !isChange);
-
               setState(() {});
             },
             icon: SvgPicture.asset(
