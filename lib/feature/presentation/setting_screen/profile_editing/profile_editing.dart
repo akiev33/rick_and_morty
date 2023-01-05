@@ -7,9 +7,14 @@ import 'package:rick_and_morty/feature/presentation/setting_screen/login/login_e
 import 'package:rick_and_morty/resources/resources.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
 
-class ProfileEditing extends StatelessWidget {
+class ProfileEditing extends StatefulWidget {
   const ProfileEditing({super.key});
 
+  @override
+  State<ProfileEditing> createState() => _ProfileEditingState();
+}
+
+class _ProfileEditingState extends State<ProfileEditing> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,7 +116,7 @@ class ProfileEditing extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        'Oleg Belotserkovsky',
+                        'name',
                         style: GoogleFonts.roboto(
                           textStyle: TextStyle(
                             fontSize: 14,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rick_and_morty/feature/presentation/setting_screen/login/loginModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../theme/app_colors.dart';
 
@@ -12,7 +13,19 @@ class LoginEditing extends StatefulWidget {
 }
 
 class _LoginEditingState extends State<LoginEditing> {
-  final _login = TextEditingController();
+  late final SharedPreferences prefs;
+  late final _login = TextEditingController();
+
+  @override
+  void initState() {
+    initPrefs();
+    super.initState();
+  }
+
+  void initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    _login.text = prefs.getString('login') ?? 'Логин';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +35,9 @@ class _LoginEditingState extends State<LoginEditing> {
         height: 50,
         margin: const EdgeInsets.symmetric(horizontal: 28),
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             Navigator.pop(context);
+            await prefs.setString('login', _login.text);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.color22A2BD,

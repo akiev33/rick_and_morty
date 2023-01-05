@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rick_and_morty/feature/presentation/setting_screen/NSF_editing/fullNameModel.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NfsEditing extends StatefulWidget {
   const NfsEditing({super.key});
@@ -11,9 +12,23 @@ class NfsEditing extends StatefulWidget {
 }
 
 class _NfsEditingState extends State<NfsEditing> {
-  final _name = TextEditingController();
-  final _surname = TextEditingController();
-  final _patronymic = TextEditingController();
+  late final SharedPreferences prefs;
+  late final _name = TextEditingController();
+  late final _surname = TextEditingController();
+  late final _patronymic = TextEditingController();
+
+  @override
+  void initState() {
+    initPrefs();
+    super.initState();
+  }
+
+  void initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    _name.text = prefs.getString('name') ?? 'Имя';
+    _surname.text = prefs.getString('surname') ?? 'Фамилия';
+    _patronymic.text = prefs.getString('patronymic') ?? 'Отчество';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +38,11 @@ class _NfsEditingState extends State<NfsEditing> {
         height: 50,
         margin: const EdgeInsets.symmetric(horizontal: 28),
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             Navigator.pop(context);
+            await prefs.setString('name', _name.text);
+            await prefs.setString('surname', _surname.text);
+            await prefs.setString('patronymic', _patronymic.text);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.color22A2BD,
