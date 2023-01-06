@@ -5,9 +5,14 @@ import 'package:rick_and_morty/feature/presentation/setting_screen/profile_editi
 import 'package:rick_and_morty/resources/resources.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
 
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
 
+  @override
+  State<SettingScreen> createState() => _SettingScreenState();
+}
+
+class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,47 +142,122 @@ class SettingScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/colorPalette.svg',
-                      height: 36,
-                      width: 36,
-                    ),
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Темная тема',
-                          style: GoogleFonts.roboto(
-                            textStyle: TextStyle(
-                              color: AppColors.colorFFFFFF,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              letterSpacing: 0.15,
+                GestureDetector(
+                  onTap: () {
+                    showDialog<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        int groupValue = 0;
+                        return AlertDialog(
+                          backgroundColor: AppColors.color152A3A,
+                          title: Text(
+                            'Темная тема',
+                            style: GoogleFonts.roboto(
+                              textStyle: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 0.15,
+                                color: AppColors.colorFFFFFF,
+                              ),
                             ),
                           ),
-                        ),
-                        Text(
-                          'Включена',
-                          style: GoogleFonts.roboto(
-                            textStyle: TextStyle(
-                              color: AppColors.color6E798C.withOpacity(0.60),
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                              letterSpacing: 0.25,
+                          content: StatefulBuilder(
+                            builder:
+                                (BuildContext context, StateSetter setState) {
+                              return SizedBox(
+                                height: 120,
+                                width: 310,
+                                child: Column(
+                                  children: [
+                                    _myRadioButton(
+                                      title: 'Включено',
+                                      value: 0,
+                                      groupValue: groupValue,
+                                      onChanged: (val) => setState(
+                                        () => groupValue = val ?? 0,
+                                      ),
+                                    ),
+                                    _myRadioButton(
+                                      title: 'Выключено',
+                                      value: 1,
+                                      groupValue: groupValue,
+                                      onChanged: (val) => setState(
+                                        () => groupValue = val ?? 0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Container(
+                                color: AppColors.color152A3A,
+                                padding: const EdgeInsets.all(14),
+                                child: Text(
+                                  'Отмена',
+                                  style: GoogleFonts.roboto(
+                                    textStyle: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.colorFFFFFF,
+                                      letterSpacing: 1.5,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/colorPalette.svg',
+                        height: 36,
+                        width: 36,
+                      ),
+                      const SizedBox(width: 16),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Темная тема',
+                            style: GoogleFonts.roboto(
+                              textStyle: TextStyle(
+                                color: AppColors.colorFFFFFF,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                                letterSpacing: 0.15,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 224),
-                    Icon(
-                      Icons.navigate_next,
-                      color: AppColors.colorFFFFFF,
-                    ),
-                  ],
+                          Text(
+                            'Включена',
+                            style: GoogleFonts.roboto(
+                              textStyle: TextStyle(
+                                color: AppColors.color6E798C.withOpacity(0.60),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                                letterSpacing: 0.25,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 224),
+                      Icon(
+                        Icons.navigate_next,
+                        color: AppColors.colorFFFFFF,
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 36),
                 Divider(
@@ -244,4 +324,28 @@ class SettingScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _myRadioButton({
+  required String title,
+  required int value,
+  required int groupValue,
+  required void Function(int?)? onChanged,
+}) {
+  return RadioListTile(
+    value: value,
+    groupValue: groupValue,
+    onChanged: onChanged,
+    title: Text(
+      title,
+      style: GoogleFonts.roboto(
+        textStyle: TextStyle(
+          color: AppColors.colorFFFFFF,
+          fontWeight: FontWeight.w400,
+          fontSize: 16,
+          letterSpacing: 0.15,
+        ),
+      ),
+    ),
+  );
 }
