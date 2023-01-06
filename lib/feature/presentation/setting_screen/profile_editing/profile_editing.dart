@@ -1,11 +1,13 @@
 import 'dart:developer';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rick_and_morty/feature/presentation/setting_screen/NSF_editing/nsf_editing.dart';
 import 'package:rick_and_morty/feature/presentation/setting_screen/login/login_editing.dart';
 import 'package:rick_and_morty/resources/resources.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileEditing extends StatefulWidget {
   const ProfileEditing({super.key});
@@ -15,6 +17,27 @@ class ProfileEditing extends StatefulWidget {
 }
 
 class _ProfileEditingState extends State<ProfileEditing> {
+  late final SharedPreferences prefs;
+  String name = '';
+  String surname = '';
+  String patronymic = '';
+  String login = '';
+
+  @override
+  void initState() {
+    initPrefs();
+    super.initState();
+  }
+
+  initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    name = prefs.getString('name') ?? '';
+    surname = prefs.getString('surname') ?? '';
+    patronymic = prefs.getString('patronymic') ?? '';
+    login = prefs.getString('login') ?? '';
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,8 +138,8 @@ class _ProfileEditingState extends State<ProfileEditing> {
                         ),
                       ),
                       const SizedBox(height: 2),
-                      Text(
-                        'name',
+                      AutoSizeText(
+                        '''$surname $name $patronymic''',
                         style: GoogleFonts.roboto(
                           textStyle: TextStyle(
                             fontSize: 14,
@@ -164,7 +187,7 @@ class _ProfileEditingState extends State<ProfileEditing> {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        'Rick',
+                        login,
                         style: GoogleFonts.roboto(
                           textStyle: TextStyle(
                             fontSize: 14,
