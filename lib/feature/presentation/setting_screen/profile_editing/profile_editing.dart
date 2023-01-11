@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rick_and_morty/feature/presentation/setting_screen/NSF_editing/nsf_editing.dart';
@@ -18,10 +17,8 @@ class ProfileEditing extends StatefulWidget {
 
 class _ProfileEditingState extends State<ProfileEditing> {
   late final SharedPreferences prefs;
-  String name = '';
-  String surname = '';
-  String patronymic = '';
-  String login = '';
+  String login = 'no login';
+  String fullName = 'no information';
 
   @override
   void initState() {
@@ -31,10 +28,8 @@ class _ProfileEditingState extends State<ProfileEditing> {
 
   initPrefs() async {
     prefs = await SharedPreferences.getInstance();
-    name = prefs.getString('name') ?? '';
-    surname = prefs.getString('surname') ?? '';
-    patronymic = prefs.getString('patronymic') ?? '';
-    login = prefs.getString('login') ?? '';
+    fullName = prefs.getString('fullName') ?? 'no information';
+    login = prefs.getString('login') ?? 'no login';
     setState(() {});
   }
 
@@ -46,7 +41,7 @@ class _ProfileEditingState extends State<ProfileEditing> {
         leading: IconButton(
           splashRadius: 25,
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, <String>[fullName, login]);
           },
           icon: const Icon(Icons.arrow_back),
         ),
@@ -118,7 +113,11 @@ class _ProfileEditingState extends State<ProfileEditing> {
                   MaterialPageRoute(
                     builder: (context) => const NfsEditing(),
                   ),
-                );
+                ).then((value) {
+                  prefs.setString('fullName', value);
+                  fullName = value;
+                  setState(() {});
+                });
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -138,8 +137,8 @@ class _ProfileEditingState extends State<ProfileEditing> {
                         ),
                       ),
                       const SizedBox(height: 2),
-                      AutoSizeText(
-                        '''$surname $name $patronymic''',
+                      Text(
+                        fullName,
                         style: GoogleFonts.roboto(
                           textStyle: TextStyle(
                             fontSize: 14,
@@ -166,6 +165,12 @@ class _ProfileEditingState extends State<ProfileEditing> {
                   MaterialPageRoute(
                     builder: (context) => const LoginEditing(),
                   ),
+                ).then(
+                  (value) {
+                    login = value;
+                    prefs.setString('login', login);
+                    setState(() {});
+                  },
                 );
               },
               child: Row(

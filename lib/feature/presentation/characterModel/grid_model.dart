@@ -3,13 +3,23 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../domain/entities/entities.dart';
 import '../../../theme/app_colors.dart';
 
 class GridModel extends StatefulWidget {
-  const GridModel({super.key, required this.state});
+  const GridModel({
+    super.key,
+    required this.name,
+    required this.gender,
+    required this.image,
+    required this.species,
+    required this.status,
+  });
 
-  final Results? state;
+  final String image;
+  final String status;
+  final String name;
+  final String species;
+  final String gender;
 
   @override
   State<GridModel> createState() => _GridModelState();
@@ -30,7 +40,7 @@ class _GridModelState extends State<GridModel> {
             alignment: Alignment.center,
             decoration: const BoxDecoration(shape: BoxShape.circle),
             child: CachedNetworkImage(
-              imageUrl: '${widget.state?.image}',
+              imageUrl: widget.image,
               fit: BoxFit.cover,
               placeholder: (context, url) => CircularProgressIndicator.adaptive(
                 backgroundColor: AppColors.color43D049,
@@ -40,13 +50,13 @@ class _GridModelState extends State<GridModel> {
           ),
           const SizedBox(height: 18),
           Text(
-            '${widget.state?.status}',
+            widget.status,
             style: GoogleFonts.roboto(
               textStyle: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 15,
                 letterSpacing: 1.5,
-                color: statusColor(widget.state?.status ?? ''),
+                color: statusColor(widget.status),
               ),
             ),
           ),
@@ -55,7 +65,7 @@ class _GridModelState extends State<GridModel> {
             height: 20,
             width: 164,
             child: AutoSizeText(
-              '${widget.state?.name}',
+              widget.name,
               minFontSize: 1,
               maxLines: 2,
               textAlign: TextAlign.center,
@@ -71,7 +81,7 @@ class _GridModelState extends State<GridModel> {
           ),
           const SizedBox(height: 2),
           Text(
-            '${widget.state?.species}, ${widget.state?.gender}',
+            '${widget.species}, ${widget.gender}',
             style: GoogleFonts.roboto(
               textStyle: TextStyle(
                 fontSize: 12,

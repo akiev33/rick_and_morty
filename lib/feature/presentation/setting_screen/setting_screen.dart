@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rick_and_morty/feature/presentation/setting_screen/profile_editing/profile_editing.dart';
 import 'package:rick_and_morty/resources/resources.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -13,6 +14,31 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+  late final SharedPreferences prefs;
+  int groupValue = 0;
+  List<String> infomation = ['No infomation', 'No login'];
+  ValueNotifier<String> theme = ValueNotifier('Включено');
+
+  @override
+  void initState() {
+    initPrefs();
+    super.initState();
+  }
+
+  void initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    infomation =
+        prefs.getStringList('infomation') ?? ['No infomation', 'No login'];
+    groupValue = prefs.getInt('radioButtonValue') ?? 0;
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    theme.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +82,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Oleg Belotserkovsky',
+                          infomation[0],
                           style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                               fontSize: 16,
@@ -68,7 +94,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          'Rick',
+                          infomation[1],
                           style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                               fontSize: 14,
@@ -93,6 +119,12 @@ class _SettingScreenState extends State<SettingScreen> {
                         MaterialPageRoute(
                           builder: (context) => const ProfileEditing(),
                         ),
+                      ).then(
+                        (value) async {
+                          infomation = value;
+                          prefs.setStringList('infomation', infomation);
+                          setState(() {});
+                        },
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -147,7 +179,6 @@ class _SettingScreenState extends State<SettingScreen> {
                     showDialog<void>(
                       context: context,
                       builder: (BuildContext context) {
-                        int groupValue = 0;
                         return AlertDialog(
                           backgroundColor: AppColors.color152A3A,
                           title: Text(
@@ -173,17 +204,31 @@ class _SettingScreenState extends State<SettingScreen> {
                                       title: 'Включено',
                                       value: 0,
                                       groupValue: groupValue,
-                                      onChanged: (val) => setState(
-                                        () => groupValue = val ?? 0,
-                                      ),
+                                      onChanged: (val) {
+                                        theme.value = 'Включено';
+                                        setState(
+                                          () => groupValue = val ?? 0,
+                                        );
+                                        prefs.setInt(
+                                          'radioButtonValue',
+                                          groupValue,
+                                        );
+                                      },
                                     ),
                                     _myRadioButton(
                                       title: 'Выключено',
                                       value: 1,
                                       groupValue: groupValue,
-                                      onChanged: (val) => setState(
-                                        () => groupValue = val ?? 0,
-                                      ),
+                                      onChanged: (val) {
+                                        theme.value = 'Выключено';
+                                        setState(
+                                          () => groupValue = val ?? 0,
+                                        );
+                                        prefs.setInt(
+                                          'radioButtonValue',
+                                          groupValue,
+                                        );
+                                      },
                                     ),
                                   ],
                                 ),
@@ -238,17 +283,22 @@ class _SettingScreenState extends State<SettingScreen> {
                               ),
                             ),
                           ),
-                          Text(
-                            'Включена',
-                            style: GoogleFonts.roboto(
-                              textStyle: TextStyle(
-                                color: AppColors.color6E798C.withOpacity(0.60),
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                letterSpacing: 0.25,
-                              ),
-                            ),
-                          ),
+                          ValueListenableBuilder(
+                              valueListenable: theme,
+                              builder: (context, _, __) {
+                                return Text(
+                                  theme.value,
+                                  style: GoogleFonts.roboto(
+                                    textStyle: TextStyle(
+                                      color: AppColors.color6E798C
+                                          .withOpacity(0.60),
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                      letterSpacing: 0.25,
+                                    ),
+                                  ),
+                                );
+                              }),
                         ],
                       ),
                       const SizedBox(width: 224),

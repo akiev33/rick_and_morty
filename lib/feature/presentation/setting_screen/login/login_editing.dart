@@ -24,7 +24,7 @@ class _LoginEditingState extends State<LoginEditing> {
 
   void initPrefs() async {
     prefs = await SharedPreferences.getInstance();
-    _login.text = prefs.getString('login') ?? 'Логин';
+    _login.text = prefs.getString('login') ?? '';
   }
 
   @override
@@ -36,7 +36,7 @@ class _LoginEditingState extends State<LoginEditing> {
         margin: const EdgeInsets.symmetric(horizontal: 28),
         child: ElevatedButton(
           onPressed: () async {
-            Navigator.pop(context);
+            Navigator.pop(context, _login.text);
             await prefs.setString('login', _login.text);
           },
           style: ElevatedButton.styleFrom(

@@ -13,6 +13,7 @@ class NfsEditing extends StatefulWidget {
 
 class _NfsEditingState extends State<NfsEditing> {
   late final SharedPreferences prefs;
+  bool check = false;
   late final _name = TextEditingController();
   late final _surname = TextEditingController();
   late final _patronymic = TextEditingController();
@@ -25,9 +26,10 @@ class _NfsEditingState extends State<NfsEditing> {
 
   void initPrefs() async {
     prefs = await SharedPreferences.getInstance();
-    _name.text = prefs.getString('name') ?? 'Имя';
-    _surname.text = prefs.getString('surname') ?? 'Фамилия';
-    _patronymic.text = prefs.getString('patronymic') ?? 'Отчество';
+    _name.text = prefs.getString('name') ?? '';
+    _surname.text = prefs.getString('surname') ?? '';
+    _patronymic.text = prefs.getString('patronymic') ?? '';
+    setState(() {});
   }
 
   @override
@@ -39,7 +41,10 @@ class _NfsEditingState extends State<NfsEditing> {
         margin: const EdgeInsets.symmetric(horizontal: 28),
         child: ElevatedButton(
           onPressed: () async {
-            Navigator.pop(context);
+            Navigator.pop(
+              context,
+              '${_name.text} ${_surname.text} ${_patronymic.text}',
+            );
             await prefs.setString('name', _name.text);
             await prefs.setString('surname', _surname.text);
             await prefs.setString('patronymic', _patronymic.text);

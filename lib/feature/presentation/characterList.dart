@@ -70,7 +70,7 @@ class _CharacterListState extends State<CharacterList> {
                   listener: (context, state) async {
                     if (state is SuccessState) {
                       if (!state.isLoading) {
-                        await Future.delayed(const Duration(milliseconds: 100));
+                        await Future.delayed(const Duration(milliseconds: 300));
                         canLoad = true;
                       }
                       countInCharacter = state.info?.count ?? 0;
@@ -109,7 +109,11 @@ class _CharacterListState extends State<CharacterList> {
                                   );
                                 },
                                 child: CharacterModel(
-                                  state: state.user![index],
+                                  image: state.user?[index].image ?? '',
+                                  name: state.user?[index].name ?? '',
+                                  gender: state.user?[index].gender ?? '',
+                                  species: state.user?[index].species ?? '',
+                                  status: state.user?[index].status ?? '',
                                 ),
                               ),
                               separatorBuilder: (context, index) =>
@@ -135,7 +139,11 @@ class _CharacterListState extends State<CharacterList> {
                                   );
                                 },
                                 child: GridModel(
-                                  state: state.user![index],
+                                  image: state.user?[index].image ?? '',
+                                  name: state.user?[index].name ?? '',
+                                  gender: state.user?[index].gender ?? '',
+                                  species: state.user?[index].species ?? '',
+                                  status: state.user?[index].status ?? '',
                                 ),
                               ),
                             ),
