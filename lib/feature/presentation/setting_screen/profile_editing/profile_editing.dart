@@ -116,6 +116,7 @@ class _ProfileEditingState extends State<ProfileEditing> {
                 ).then((value) {
                   prefs.setString('fullName', value);
                   fullName = value;
+                  log(fullName.toString());
                   setState(() {});
                 });
               },

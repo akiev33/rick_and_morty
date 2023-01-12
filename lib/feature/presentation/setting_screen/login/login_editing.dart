@@ -15,6 +15,7 @@ class LoginEditing extends StatefulWidget {
 class _LoginEditingState extends State<LoginEditing> {
   late final SharedPreferences prefs;
   late final _login = TextEditingController();
+  bool check = true;
 
   @override
   void initState() {
@@ -36,7 +37,11 @@ class _LoginEditingState extends State<LoginEditing> {
         margin: const EdgeInsets.symmetric(horizontal: 28),
         child: ElevatedButton(
           onPressed: () async {
-            Navigator.pop(context, _login.text);
+            emptyCheck();
+            Navigator.pop(
+              context,
+              check ? 'no ligon' : _login.text,
+            );
             await prefs.setString('login', _login.text);
           },
           style: ElevatedButton.styleFrom(
@@ -87,5 +92,13 @@ class _LoginEditingState extends State<LoginEditing> {
         ),
       ),
     );
+  }
+
+  emptyCheck() {
+    if (_login.text.isEmpty) {
+      return check = true;
+    } else {
+      return check = false;
+    }
   }
 }

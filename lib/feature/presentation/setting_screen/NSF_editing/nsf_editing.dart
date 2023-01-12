@@ -13,7 +13,7 @@ class NfsEditing extends StatefulWidget {
 
 class _NfsEditingState extends State<NfsEditing> {
   late final SharedPreferences prefs;
-  bool check = false;
+  bool check = true;
   late final _name = TextEditingController();
   late final _surname = TextEditingController();
   late final _patronymic = TextEditingController();
@@ -41,9 +41,12 @@ class _NfsEditingState extends State<NfsEditing> {
         margin: const EdgeInsets.symmetric(horizontal: 28),
         child: ElevatedButton(
           onPressed: () async {
+            emptyCheck();
             Navigator.pop(
               context,
-              '${_name.text} ${_surname.text} ${_patronymic.text}',
+              check
+                  ? 'empty'
+                  : '${_name.text} ${_surname.text} ${_patronymic.text}',
             );
             await prefs.setString('name', _name.text);
             await prefs.setString('surname', _surname.text);
@@ -107,5 +110,15 @@ class _NfsEditingState extends State<NfsEditing> {
         ),
       ),
     );
+  }
+
+  emptyCheck() {
+    if (_name.text.isEmpty &&
+        _surname.text.isEmpty &&
+        _patronymic.text.isEmpty) {
+      return check = true;
+    } else {
+      return check = false;
+    }
   }
 }
