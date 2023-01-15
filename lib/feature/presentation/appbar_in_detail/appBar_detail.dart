@@ -1,7 +1,9 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rick_and_morty/domain/entities/entities_detail_character.dart';
+import 'package:rick_and_morty/theme/theme_provider.dart';
 
 import '../../../theme/app_colors.dart';
 
@@ -62,7 +64,8 @@ class AppBarDetail extends SliverPersistentHeaderDelegate {
               height: expandedHeight,
               width: 200,
               child: CircleAvatar(
-                backgroundColor: AppColors.color0B1E2D,
+                backgroundColor:
+                    context.watch<ThemeProvider>().colorDetailTheme,
                 radius: 70,
                 child: CircleAvatar(
                   foregroundImage: CachedNetworkImageProvider('${state.image}'),

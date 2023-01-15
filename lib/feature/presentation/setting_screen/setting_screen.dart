@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:rick_and_morty/feature/presentation/setting_screen/profile_editing/profile_editing.dart';
 import 'package:rick_and_morty/resources/resources.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../theme/theme_provider.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -53,7 +56,7 @@ class _SettingScreenState extends State<SettingScreen> {
               'Настройки',
               style: GoogleFonts.roboto(
                 textStyle: TextStyle(
-                  color: AppColors.colorFFFFFF,
+                  color: context.watch<ThemeProvider>().colorInText,
                   letterSpacing: 0.15,
                   fontWeight: FontWeight.w500,
                   fontSize: 20,
@@ -88,7 +91,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                               letterSpacing: 0.15,
-                              color: AppColors.colorFFFFFF,
+                              color: context.watch<ThemeProvider>().colorInText,
                             ),
                           ),
                         ),
@@ -158,7 +161,7 @@ class _SettingScreenState extends State<SettingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Divider(
-                  color: AppColors.color152A3A,
+                  color: context.watch<ThemeProvider>().colorDividerHorizontal,
                   thickness: 1,
                 ),
                 const SizedBox(height: 36),
@@ -180,7 +183,9 @@ class _SettingScreenState extends State<SettingScreen> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          backgroundColor: AppColors.color152A3A,
+                          backgroundColor: context
+                              .watch<ThemeProvider>()
+                              .colorButtonNavigationBar,
                           title: Text(
                             'Темная тема',
                             style: GoogleFonts.roboto(
@@ -188,7 +193,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
                                 letterSpacing: 0.15,
-                                color: AppColors.colorFFFFFF,
+                                color:
+                                    context.watch<ThemeProvider>().colorInText,
                               ),
                             ),
                           ),
@@ -204,30 +210,36 @@ class _SettingScreenState extends State<SettingScreen> {
                                       title: 'Включено',
                                       value: 0,
                                       groupValue: groupValue,
-                                      onChanged: (val) {
+                                      onChanged: (val) async {
                                         theme.value = 'Включено';
-                                        setState(
-                                          () => groupValue = val ?? 0,
-                                        );
+                                        setState(() {
+                                          groupValue = val ?? 0;
+                                        });
                                         prefs.setInt(
                                           'radioButtonValue',
                                           groupValue,
                                         );
+                                        context
+                                            .read<ThemeProvider>()
+                                            .changeTheme(isDark: true);
                                       },
                                     ),
                                     _myRadioButton(
                                       title: 'Выключено',
                                       value: 1,
                                       groupValue: groupValue,
-                                      onChanged: (val) {
+                                      onChanged: (val) async {
                                         theme.value = 'Выключено';
-                                        setState(
-                                          () => groupValue = val ?? 0,
-                                        );
+                                        setState(() {
+                                          groupValue = val ?? 0;
+                                        });
                                         prefs.setInt(
                                           'radioButtonValue',
                                           groupValue,
                                         );
+                                        context
+                                            .read<ThemeProvider>()
+                                            .changeTheme(isDark: false);
                                       },
                                     ),
                                   ],
@@ -241,7 +253,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                 Navigator.of(context).pop();
                               },
                               child: Container(
-                                color: AppColors.color152A3A,
+                                color: context
+                                    .watch<ThemeProvider>()
+                                    .colorButtonNavigationBar,
                                 padding: const EdgeInsets.all(14),
                                 child: Text(
                                   'Отмена',
@@ -249,7 +263,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                     textStyle: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
-                                      color: AppColors.colorFFFFFF,
+                                      color: context
+                                          .watch<ThemeProvider>()
+                                          .colorInText,
                                       letterSpacing: 1.5,
                                     ),
                                   ),
@@ -267,6 +283,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         'assets/icons/colorPalette.svg',
                         height: 36,
                         width: 36,
+                        color: context.watch<ThemeProvider>().colorInText,
                       ),
                       const SizedBox(width: 16),
                       Column(
@@ -276,7 +293,8 @@ class _SettingScreenState extends State<SettingScreen> {
                             'Темная тема',
                             style: GoogleFonts.roboto(
                               textStyle: TextStyle(
-                                color: AppColors.colorFFFFFF,
+                                color:
+                                    context.watch<ThemeProvider>().colorInText,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 16,
                                 letterSpacing: 0.15,
@@ -304,14 +322,14 @@ class _SettingScreenState extends State<SettingScreen> {
                       const SizedBox(width: 224),
                       Icon(
                         Icons.navigate_next,
-                        color: AppColors.colorFFFFFF,
+                        color: context.watch<ThemeProvider>().colorInText,
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 36),
                 Divider(
-                  color: AppColors.color152A3A,
+                  color: context.watch<ThemeProvider>().colorDividerHorizontal,
                   thickness: 1,
                 ),
                 const SizedBox(height: 36),
@@ -334,13 +352,13 @@ class _SettingScreenState extends State<SettingScreen> {
                       fontSize: 13,
                       fontWeight: FontWeight.w400,
                       letterSpacing: 0.25,
-                      color: AppColors.colorFFFFFF,
+                      color: context.watch<ThemeProvider>().colorInText,
                     ),
                   ),
                 ),
                 const SizedBox(height: 36),
                 Divider(
-                  color: AppColors.color152A3A,
+                  color: context.watch<ThemeProvider>().colorDividerHorizontal,
                   thickness: 1,
                 ),
                 const SizedBox(height: 36),
@@ -363,7 +381,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       fontSize: 13,
                       letterSpacing: 0.25,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.colorFFFFFF,
+                      color: context.watch<ThemeProvider>().colorInText,
                     ),
                   ),
                 )
@@ -374,28 +392,28 @@ class _SettingScreenState extends State<SettingScreen> {
       ),
     );
   }
-}
 
-Widget _myRadioButton({
-  required String title,
-  required int value,
-  required int groupValue,
-  required void Function(int?)? onChanged,
-}) {
-  return RadioListTile(
-    value: value,
-    groupValue: groupValue,
-    onChanged: onChanged,
-    title: Text(
-      title,
-      style: GoogleFonts.roboto(
-        textStyle: TextStyle(
-          color: AppColors.colorFFFFFF,
-          fontWeight: FontWeight.w400,
-          fontSize: 16,
-          letterSpacing: 0.15,
+  Widget _myRadioButton({
+    required String title,
+    required int value,
+    required int groupValue,
+    required void Function(int?)? onChanged,
+  }) {
+    return RadioListTile(
+      value: value,
+      groupValue: groupValue,
+      onChanged: onChanged,
+      title: Text(
+        title,
+        style: GoogleFonts.roboto(
+          textStyle: TextStyle(
+            color: context.watch<ThemeProvider>().colorInText,
+            fontWeight: FontWeight.w400,
+            fontSize: 16,
+            letterSpacing: 0.15,
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

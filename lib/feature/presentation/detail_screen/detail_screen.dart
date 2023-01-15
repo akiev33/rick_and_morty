@@ -7,6 +7,7 @@ import 'package:rick_and_morty/feature/cubit/cubit_detail_character.dart';
 import 'package:rick_and_morty/feature/cubit/cubit_episods.dart';
 import 'package:rick_and_morty/feature/presentation/appbar_in_detail/appBar_detail.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
+import 'package:rick_and_morty/theme/theme_provider.dart';
 
 import '../../../resources/resources.dart';
 
@@ -66,7 +67,9 @@ class DetailScreen extends StatelessWidget {
                                       fontWeight: FontWeight.w400,
                                       fontSize: 34,
                                       letterSpacing: 0.25,
-                                      color: AppColors.colorFFFFFF,
+                                      color: context
+                                          .watch<ThemeProvider>()
+                                          .colorInText,
                                     ),
                                   ),
                                 ),
@@ -114,7 +117,9 @@ class DetailScreen extends StatelessWidget {
                                             fontSize: 14,
                                             fontWeight: FontWeight.w400,
                                             letterSpacing: 0.25,
-                                            color: AppColors.colorFFFFFF,
+                                            color: context
+                                                .watch<ThemeProvider>()
+                                                .colorInText,
                                           ),
                                         ),
                                       ),
@@ -144,7 +149,9 @@ class DetailScreen extends StatelessWidget {
                                             fontSize: 14,
                                             fontWeight: FontWeight.w400,
                                             letterSpacing: 0.25,
-                                            color: AppColors.colorFFFFFF,
+                                            color: context
+                                                .watch<ThemeProvider>()
+                                                .colorInText,
                                           ),
                                         ),
                                       ),
@@ -175,7 +182,9 @@ class DetailScreen extends StatelessWidget {
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         letterSpacing: 0.25,
-                                        color: AppColors.colorFFFFFF,
+                                        color: context
+                                            .watch<ThemeProvider>()
+                                            .colorInText,
                                       ),
                                     ),
                                   ),
@@ -203,7 +212,9 @@ class DetailScreen extends StatelessWidget {
                                             fontSize: 14,
                                             fontWeight: FontWeight.w400,
                                             letterSpacing: 0.25,
-                                            color: AppColors.colorFFFFFF,
+                                            color: context
+                                                .watch<ThemeProvider>()
+                                                .colorInText,
                                           ),
                                         ),
                                       ),
@@ -217,7 +228,9 @@ class DetailScreen extends StatelessWidget {
                         const SizedBox(height: 36),
                         Divider(
                           thickness: 2,
-                          color: AppColors.color152A3A,
+                          color: context
+                              .watch<ThemeProvider>()
+                              .colorDividerHorizontal,
                         ),
                         const SizedBox(height: 36),
                         Padding(
@@ -235,7 +248,9 @@ class DetailScreen extends StatelessWidget {
                                         fontWeight: FontWeight.w500,
                                         fontSize: 20,
                                         letterSpacing: 0.15,
-                                        color: AppColors.colorFFFFFF,
+                                        color: context
+                                            .watch<ThemeProvider>()
+                                            .colorInText,
                                       ),
                                     ),
                                   ),
@@ -263,8 +278,9 @@ class DetailScreen extends StatelessWidget {
                                           Container(
                                         height: 75,
                                         width: double.infinity,
-                                        color: AppColors.color152A3A
-                                            .withOpacity(0.70),
+                                        color: context
+                                            .watch<ThemeProvider>()
+                                            .colorDetailEpisods,
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -290,7 +306,9 @@ class DetailScreen extends StatelessWidget {
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.w500,
                                                   letterSpacing: 0.5,
-                                                  color: AppColors.colorFFFFFF,
+                                                  color: context
+                                                      .watch<ThemeProvider>()
+                                                      .colorInText,
                                                 ),
                                               ),
                                             ),

@@ -114,8 +114,10 @@ class _ProfileEditingState extends State<ProfileEditing> {
                     builder: (context) => const NfsEditing(),
                   ),
                 ).then((value) {
-                  prefs.setString('fullName', value);
-                  fullName = value;
+                  if (value != null) {
+                    prefs.setString('fullName', value);
+                    fullName = value;
+                  }
                   log(fullName.toString());
                   setState(() {});
                 });
@@ -168,8 +170,11 @@ class _ProfileEditingState extends State<ProfileEditing> {
                   ),
                 ).then(
                   (value) {
-                    login = value;
-                    prefs.setString('login', login);
+                    if (value != null) {
+                      login = value;
+                      prefs.setString('login', login);
+                    }
+                    log(login.toString());
                     setState(() {});
                   },
                 );

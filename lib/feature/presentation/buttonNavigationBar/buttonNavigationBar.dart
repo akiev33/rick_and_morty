@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:rick_and_morty/feature/presentation/episods/episods_list.dart';
 import 'package:rick_and_morty/feature/presentation/location/location_list.dart';
 import 'package:rick_and_morty/feature/presentation/setting_screen/setting_screen.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
+import 'package:rick_and_morty/theme/theme_provider.dart';
 
 import '../../../resources/svgIcons.dart';
 import '../characterList.dart';
@@ -38,8 +40,10 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppColors.color152A3A,
-        selectedItemColor: AppColors.color43D049,
+        backgroundColor:
+            context.watch<ThemeProvider>().colorButtonNavigationBar,
+        selectedItemColor:
+            context.watch<ThemeProvider>().colorButtonNavigationIcons,
         unselectedItemColor: AppColors.color5B6975,
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
@@ -50,7 +54,9 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
             icon: SvgPicture.asset(
               settings,
               height: selectedIndex == 0 ? 25 : 23,
-              color: selectedIndex == 0 ? AppColors.color43D049 : null,
+              color: selectedIndex == 0
+                  ? context.watch<ThemeProvider>().colorButtonNavigationIcons
+                  : null,
             ),
           ),
           BottomNavigationBarItem(
@@ -59,7 +65,7 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
               planet,
               height: selectedIndex == 1 ? 23 : 20,
               color: selectedIndex == 1
-                  ? AppColors.color43D049
+                  ? context.watch<ThemeProvider>().colorButtonNavigationIcons
                   : AppColors.color5B6975,
             ),
           ),
@@ -69,7 +75,7 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
               tv,
               height: selectedIndex == 2 ? 23 : 20,
               color: selectedIndex == 2
-                  ? AppColors.color43D049
+                  ? context.watch<ThemeProvider>().colorButtonNavigationIcons
                   : AppColors.color5B6975,
             ),
           ),
@@ -79,7 +85,7 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
               ghost,
               height: selectedIndex == 3 ? 25 : 23,
               color: selectedIndex == 3
-                  ? AppColors.color43D049
+                  ? context.watch<ThemeProvider>().colorButtonNavigationIcons
                   : AppColors.color5B6975,
             ),
           ),

@@ -25,7 +25,8 @@ class _LoginEditingState extends State<LoginEditing> {
 
   void initPrefs() async {
     prefs = await SharedPreferences.getInstance();
-    _login.text = prefs.getString('login') ?? '';
+    _login.text = prefs.getString('login2') ?? '';
+    setState(() {});
   }
 
   @override
@@ -40,9 +41,9 @@ class _LoginEditingState extends State<LoginEditing> {
             emptyCheck();
             Navigator.pop(
               context,
-              check ? 'no ligon' : _login.text,
+              check ? 'no login' : _login.text,
             );
-            await prefs.setString('login', _login.text);
+            prefs.setString('login2', _login.text);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.color22A2BD,

@@ -26,6 +26,12 @@ class _CharacterListState extends State<CharacterList> {
   bool isChange = true;
 
   @override
+  void dispose() {
+    filterEntity.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,

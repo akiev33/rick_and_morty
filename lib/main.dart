@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:rick_and_morty/data/network/dio_settings.dart';
 import 'package:rick_and_morty/data/repo/dio.dart';
 import 'package:rick_and_morty/domain/entities/filters_characters_entities.dart';
 import 'package:rick_and_morty/feature/cubit/cubit.dart';
 import 'package:rick_and_morty/feature/presentation/start_screen.dart';
-import 'package:rick_and_morty/theme/app_colors.dart';
+import 'package:rick_and_morty/theme/theme.dart';
 import 'dart:io';
+
+import 'package:rick_and_morty/theme/theme_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,31 +30,45 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider(
-          create: (context) => DioSettings(),
-        ),
-        RepositoryProvider(
-          create: (context) => InfoDio(
-            dio: RepositoryProvider.of<DioSettings>(context).dio,
-          ),
-        ),
-      ],
-      child: BlocProvider(
-        create: (context) =>
-            UserCubit(repo: RepositoryProvider.of<InfoDio>(context))
-              ..getInfo(filterModel: FilterEntity()),
-        child: MaterialApp(
+    return InitWidget(
+      child: Builder(builder: (context) {
+        return MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            unselectedWidgetColor: AppColors.color5B6975,
-            scaffoldBackgroundColor: AppColors.color0B1E2D,
-            appBarTheme: AppBarTheme(
-              backgroundColor: AppColors.color0B1E2D,
+          darkTheme: AppTheme.darkTheme,
+          theme: AppTheme.lightTheme,
+          themeMode: context.watch<ThemeProvider>().themeMode,
+          home: const StartScreen(),
+        );
+      }),
+    );
+  }
+}
+
+class InitWidget extends StatelessWidget {
+  const InitWidget({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<ThemeProvider>(
+      create: (context) => ThemeProvider(),
+      child: MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider(
+            create: (context) => DioSettings(),
+          ),
+          RepositoryProvider(
+            create: (context) => InfoDio(
+              dio: RepositoryProvider.of<DioSettings>(context).dio,
             ),
           ),
-          home: const StartScreen(),
+        ],
+        child: BlocProvider(
+          create: (context) =>
+              UserCubit(repo: RepositoryProvider.of<InfoDio>(context))
+                ..getInfo(filterModel: FilterEntity()),
+          child: child,
         ),
       ),
     );

@@ -3,7 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:rick_and_morty/theme/theme_provider.dart';
 
 import '../../../resources/svgIcons.dart';
 import '../../../theme/app_colors.dart';
@@ -30,13 +31,25 @@ class _SearchScreenState extends State<SearchScreen> {
       style: TextStyle(color: AppColors.colorFFFFFF),
       decoration: InputDecoration(
         filled: true,
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(width: 0.0),
-          borderRadius: BorderRadius.all(
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 0.0,
+            color: context.watch<ThemeProvider>().colorBorderInSearch,
+          ),
+          borderRadius: const BorderRadius.all(
             Radius.circular(100.0),
           ),
         ),
-        fillColor: AppColors.color152A3A,
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 0.0,
+            color: context.watch<ThemeProvider>().colorBorderInSearch,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(100.0),
+          ),
+        ),
+        fillColor: context.watch<ThemeProvider>().colorInSearch,
         hintText: 'Найти персонажа',
         hintStyle: GoogleFonts.roboto(
           textStyle: TextStyle(
@@ -55,7 +68,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 height: 30,
                 child: VerticalDivider(
                   width: 1,
-                  color: AppColors.colorFFFFFF.withOpacity(0.40),
+                  color: context.watch<ThemeProvider>().colorDivider,
                 ),
               ),
               IconButton(

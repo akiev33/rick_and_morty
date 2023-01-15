@@ -10,4 +10,11 @@ abstract class AppTheme {
       backgroundColor: AppColors.color0B1E2D,
     ),
   );
+  static final ThemeData lightTheme = ThemeData(
+    unselectedWidgetColor: AppColors.color5B6975,
+    scaffoldBackgroundColor: AppColors.colorFFFFFF,
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.colorFFFFFF,
+    ),
+  );
 }

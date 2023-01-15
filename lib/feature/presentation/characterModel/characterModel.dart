@@ -2,6 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:rick_and_morty/theme/theme_provider.dart';
 
 import '../../../theme/app_colors.dart';
 
@@ -71,7 +73,7 @@ class _CharacterModelState extends State<CharacterModel> {
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 0.5,
-                    color: AppColors.colorFFFFFF,
+                    color: context.watch<ThemeProvider>().colorInText,
                   ),
                 ),
               ),
