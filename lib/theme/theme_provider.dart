@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
+  late final SharedPreferences prefs;
+  bool darkCheck = true;
+  ThemeProvider() {
+    init();
+  }
   ThemeMode themeMode = ThemeMode.dark;
   Color colorInText = AppColors.colorFFFFFF;
   Color colorInSearch = AppColors.color152A3A;
@@ -12,6 +18,12 @@ class ThemeProvider extends ChangeNotifier {
   Color colorDetailTheme = AppColors.color0B1E2D;
   Color colorDividerHorizontal = AppColors.color152A3A;
   Color colorDetailEpisods = AppColors.color152A3A.withOpacity(0.70);
+
+  void init() async {
+    prefs = await SharedPreferences.getInstance();
+    darkCheck = prefs.getBool('theme') ?? true;
+    changeTheme(isDark: darkCheck);
+  }
 
   changeTheme({required bool isDark}) async {
     if (isDark) {

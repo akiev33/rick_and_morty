@@ -222,6 +222,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                         context
                                             .read<ThemeProvider>()
                                             .changeTheme(isDark: true);
+                                        await prefs.setBool('theme', true);
                                       },
                                     ),
                                     _myRadioButton(
@@ -240,6 +241,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                         context
                                             .read<ThemeProvider>()
                                             .changeTheme(isDark: false);
+                                        prefs.setBool('theme', false);
                                       },
                                     ),
                                   ],
