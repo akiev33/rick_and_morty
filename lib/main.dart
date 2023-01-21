@@ -31,15 +31,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InitWidget(
-      child: Builder(builder: (context) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          darkTheme: AppTheme.darkTheme,
-          theme: AppTheme.lightTheme,
-          themeMode: context.watch<ThemeProvider>().themeMode,
-          home: const StartScreen(),
-        );
-      }),
+      child: Builder(
+        builder: (context) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            darkTheme: AppTheme.darkTheme,
+            theme: AppTheme.lightTheme,
+            themeMode: context.watch<ThemeProvider>().themeMode,
+            home: const StartScreen(),
+          );
+        },
+      ),
     );
   }
 }
