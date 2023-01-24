@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:rick_and_morty/resources/svgIcons.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
+import 'package:rick_and_morty/theme/theme_provider.dart';
 
 class Filters extends StatefulWidget {
   const Filters({super.key});
@@ -12,8 +14,42 @@ class Filters extends StatefulWidget {
 }
 
 class _FiltersState extends State<Filters> {
-  bool isChecked = false;
+  int? id;
   int number = 0;
+  List status = [
+    {
+      "id": 0,
+      "value": false,
+      "title": "Живой",
+    },
+    {
+      "id": 1,
+      "value": false,
+      "title": "Мертвый",
+    },
+    {
+      "id": 2,
+      "value": false,
+      "title": "Неизвестно",
+    },
+  ];
+  List gender = [
+    {
+      "id": 0,
+      "value": false,
+      "title": "Мужской",
+    },
+    {
+      "id": 1,
+      "value": false,
+      "title": "Женский",
+    },
+    {
+      "id": 2,
+      "value": false,
+      "title": "Бесполый",
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +60,7 @@ class _FiltersState extends State<Filters> {
           children: [
             const SizedBox(height: 10),
             Container(
-              color: AppColors.color152A3A,
+              color: context.watch<ThemeProvider>().colorButtonNavigationBar,
               height: 60,
               width: double.infinity,
               child: Padding(
@@ -38,8 +74,8 @@ class _FiltersState extends State<Filters> {
                         Navigator.pop(context);
                       },
                       icon: Icon(
-                        Icons.arrow_downward_sharp,
-                        color: AppColors.colorFFFFFF,
+                        Icons.arrow_back,
+                        color: context.watch<ThemeProvider>().colorInText,
                       ),
                     ),
                     Text(
@@ -49,7 +85,7 @@ class _FiltersState extends State<Filters> {
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 0.15,
-                          color: AppColors.colorFFFFFF,
+                          color: context.watch<ThemeProvider>().colorInText,
                         ),
                       ),
                     ),
@@ -96,7 +132,7 @@ class _FiltersState extends State<Filters> {
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                             letterSpacing: 0.15,
-                            color: AppColors.colorFFFFFF,
+                            color: context.watch<ThemeProvider>().colorInText,
                           ),
                         ),
                       ),
@@ -134,7 +170,8 @@ class _FiltersState extends State<Filters> {
                   ),
                   const SizedBox(height: 40),
                   Divider(
-                    color: AppColors.color152A3A,
+                    color:
+                        context.watch<ThemeProvider>().colorDividerHorizontal,
                     thickness: 1,
                   ),
                   const SizedBox(height: 36),
@@ -152,24 +189,38 @@ class _FiltersState extends State<Filters> {
                   const SizedBox(height: 25),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      StatusWidget(
-                        text: 'Живой',
-                        isChecked: isChecked,
+                    children: List.generate(
+                      status.length,
+                      (index) => CheckboxListTile(
+                        activeColor: AppColors.color22A2BD,
+                        controlAffinity: ListTileControlAffinity.leading,
+                        value: status[index]['value'],
+                        onChanged: (value) {
+                          setState(() {
+                            for (var element in status) {
+                              element['value'] = false;
+                            }
+                            status[index]['value'] = value;
+                          });
+                        },
+                        title: Text(
+                          status[index]['title'],
+                          style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                              letterSpacing: 0.15,
+                              color: context.watch<ThemeProvider>().colorInText,
+                            ),
+                          ),
+                        ),
                       ),
-                      StatusWidget(
-                        text: 'Мертвый',
-                        isChecked: isChecked,
-                      ),
-                      StatusWidget(
-                        text: 'Неизвестно',
-                        isChecked: isChecked,
-                      ),
-                    ],
+                    ),
                   ),
                   const SizedBox(height: 25),
                   Divider(
-                    color: AppColors.color152A3A,
+                    color:
+                        context.watch<ThemeProvider>().colorDividerHorizontal,
                     thickness: 1,
                   ),
                   const SizedBox(height: 35),
@@ -185,17 +236,34 @@ class _FiltersState extends State<Filters> {
                     ),
                   ),
                   const SizedBox(height: 25),
-                  StatusWidget(
-                    text: 'Мужской',
-                    isChecked: isChecked,
-                  ),
-                  StatusWidget(
-                    text: 'Женский',
-                    isChecked: isChecked,
-                  ),
-                  StatusWidget(
-                    text: 'Бесполый',
-                    isChecked: isChecked,
+                  Column(
+                    children: List.generate(
+                      gender.length,
+                      (index) => CheckboxListTile(
+                        activeColor: AppColors.color22A2BD,
+                        controlAffinity: ListTileControlAffinity.leading,
+                        value: gender[index]['value'],
+                        onChanged: (value) {
+                          setState(() {
+                            for (var element in gender) {
+                              element['value'] = false;
+                            }
+                            gender[index]['value'] = value;
+                          });
+                        },
+                        title: Text(
+                          gender[index]['title'],
+                          style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                              letterSpacing: 0.15,
+                              color: context.watch<ThemeProvider>().colorInText,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -207,41 +275,62 @@ class _FiltersState extends State<Filters> {
   }
 }
 
-class StatusWidget extends StatefulWidget {
-  StatusWidget({super.key, required this.isChecked, required this.text});
+// class StatusWidget extends StatefulWidget {
+//   const StatusWidget({
+//     super.key,
+//     required this.text,
+//     required this.id,
+//   });
 
-  final String text;
-  bool isChecked = false;
+//   final String text;
+//   final int? id;
 
-  @override
-  State<StatusWidget> createState() => _StatusWidgetState();
-}
+//   @override
+//   State<StatusWidget> createState() => _StatusWidgetState();
+// }
 
-class _StatusWidgetState extends State<StatusWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Checkbox(
-          value: widget.isChecked,
-          onChanged: (bool? value) {
-            setState(() {
-              widget.isChecked = value!;
-            });
-          },
-        ),
-        Text(
-          widget.text,
-          style: GoogleFonts.roboto(
-            textStyle: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              letterSpacing: 0.15,
-              color: AppColors.colorFFFFFF,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
+// class _StatusWidgetState extends State<StatusWidget> {
+//   bool isChecked = false;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       children: [
+//         Checkbox(
+//           value: isChecked,
+//           onChanged: (bool? value) {
+//             if (widget.id == 1) {
+//               isChecked = value!;
+//             }
+//             if (widget.id == 2) {
+//               isChecked = value!;
+//             }
+//             if (widget.id == 3) {
+//               isChecked = value!;
+//             }
+//             if (widget.id == 4) {
+//               isChecked = value!;
+//             }
+//             if (widget.id == 5) {
+//               isChecked = value!;
+//             }
+//             if (widget.id == 6) {
+//               isChecked = value!;
+//             }
+//             setState(() {});
+//           },
+//         ),
+        // Text(
+        //   widget.text,
+        //   style: GoogleFonts.roboto(
+        //     textStyle: TextStyle(
+        //       fontWeight: FontWeight.w400,
+        //       fontSize: 16,
+        //       letterSpacing: 0.15,
+        //       color: AppColors.colorFFFFFF,
+        //     ),
+        //   ),
+        // ),
+//       ],
+//     );
+//   }
+// }

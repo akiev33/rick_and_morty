@@ -20,6 +20,8 @@ class InfoDio implements UserRepo {
         queryParameters: {
           'page': filterEntity.currentPage,
           'name': filterEntity.searchText,
+          'status': filterEntity.status,
+          'gender': filterEntity.gender,
         },
       );
 
