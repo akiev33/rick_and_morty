@@ -46,25 +46,25 @@ class UserCubit extends Cubit<UserState> {
 }
 
 abstract class UserState {
-  final List<Results>? user;
+  final List<Results> user;
   UserState({required this.user});
 }
 
 class InitialState extends UserState {
   @override
-  final List<Results>? user;
+  final List<Results> user;
   InitialState({required this.user}) : super(user: user);
 }
 
 class LoadingState extends UserState {
   @override
-  final List<Results>? user;
+  final List<Results> user;
   LoadingState({required this.user}) : super(user: user);
 }
 
 class SuccessState extends UserState {
   @override
-  final List<Results>? user;
+  final List<Results> user;
   final Info? info;
   final bool isLoading;
   SuccessState({required this.user, this.info, this.isLoading = false})
@@ -73,7 +73,7 @@ class SuccessState extends UserState {
 
 class ErrorState extends UserState {
   @override
-  final List<Results>? user;
+  final List<Results> user;
   final String errorText;
   ErrorState({required this.errorText, required this.user}) : super(user: user);
 }

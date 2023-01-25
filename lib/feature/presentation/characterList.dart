@@ -62,6 +62,18 @@ class _CharacterListState extends State<CharacterList> {
                     BlocProvider.of<UserCubit>(context)
                         .getInfo(filterModel: filterEntity.value);
                   },
+                  status: (status) {
+                    filterEntity.value =
+                        filterEntity.value.copyWith(status: status);
+                    BlocProvider.of<UserCubit>(context)
+                        .getInfo(filterModel: filterEntity.value);
+                  },
+                  gender: (gender) {
+                    filterEntity.value =
+                        filterEntity.value.copyWith(gender: gender);
+                    BlocProvider.of<UserCubit>(context)
+                        .getInfo(filterModel: filterEntity.value);
+                  },
                 ),
                 const SizedBox(height: 10),
                 CharacterCount(
@@ -102,24 +114,24 @@ class _CharacterListState extends State<CharacterList> {
                       child: isChange
                           ? ListView.separated(
                               key: pageScroll,
-                              itemCount: state.user?.length ?? 0,
+                              itemCount: state.user.length,
                               itemBuilder: (context, index) => GestureDetector(
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => DetailScreen(
-                                        id: state.user?[index].id ?? 0,
+                                        id: state.user[index].id ?? 0,
                                       ),
                                     ),
                                   );
                                 },
                                 child: CharacterModel(
-                                  image: state.user?[index].image ?? '',
-                                  name: state.user?[index].name ?? '',
-                                  gender: state.user?[index].gender ?? '',
-                                  species: state.user?[index].species ?? '',
-                                  status: state.user?[index].status ?? '',
+                                  image: state.user[index].image ?? '',
+                                  name: state.user[index].name ?? '',
+                                  gender: state.user[index].gender ?? '',
+                                  species: state.user[index].species ?? '',
+                                  status: state.user[index].status ?? '',
                                 ),
                               ),
                               separatorBuilder: (context, index) =>
@@ -132,24 +144,24 @@ class _CharacterListState extends State<CharacterList> {
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 25,
                               ),
-                              itemCount: state.user?.length ?? 0,
+                              itemCount: state.user.length,
                               itemBuilder: (context, index) => GestureDetector(
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => DetailScreen(
-                                        id: state.user?[index].id ?? 0,
+                                        id: state.user[index].id ?? 0,
                                       ),
                                     ),
                                   );
                                 },
                                 child: GridModel(
-                                  image: state.user?[index].image ?? '',
-                                  name: state.user?[index].name ?? '',
-                                  gender: state.user?[index].gender ?? '',
-                                  species: state.user?[index].species ?? '',
-                                  status: state.user?[index].status ?? '',
+                                  image: state.user[index].image ?? '',
+                                  name: state.user[index].name ?? '',
+                                  gender: state.user[index].gender ?? '',
+                                  species: state.user[index].species ?? '',
+                                  status: state.user[index].status ?? '',
                                 ),
                               ),
                             ),

@@ -7,7 +7,14 @@ import 'package:rick_and_morty/theme/app_colors.dart';
 import 'package:rick_and_morty/theme/theme_provider.dart';
 
 class Filters extends StatefulWidget {
-  const Filters({super.key});
+  const Filters({
+    super.key,
+    required this.status,
+    required this.gender,
+  });
+
+  final Function(String status) status;
+  final Function(String gender) gender;
 
   @override
   State<Filters> createState() => _FiltersState();
@@ -18,36 +25,42 @@ class _FiltersState extends State<Filters> {
   int number = 0;
   List status = [
     {
-      "id": 0,
-      "value": false,
-      "title": "Живой",
+      'id': 0,
+      'value': false,
+      'title': 'Живой',
+      'meaning': 'Alive',
     },
     {
-      "id": 1,
-      "value": false,
-      "title": "Мертвый",
+      'id': 1,
+      'value': false,
+      'title': 'Мертвый',
+      'meaning': 'Dead',
     },
     {
-      "id": 2,
-      "value": false,
-      "title": "Неизвестно",
+      'id': 2,
+      'value': false,
+      'title': 'Неизвестно',
+      'meaning': 'unknown',
     },
   ];
   List gender = [
     {
-      "id": 0,
-      "value": false,
-      "title": "Мужской",
+      'id': 0,
+      'value': false,
+      'title': 'Мужской',
+      'meaning': 'Male',
     },
     {
-      "id": 1,
-      "value": false,
-      "title": "Женский",
+      'id': 1,
+      'value': false,
+      'title': 'Женский',
+      'meaning': 'Female',
     },
     {
-      "id": 2,
-      "value": false,
-      "title": "Бесполый",
+      'id': 2,
+      'value': false,
+      'title': 'Бесполый',
+      'meaning': 'Genderless',
     },
   ];
 
@@ -201,6 +214,11 @@ class _FiltersState extends State<Filters> {
                               element['value'] = false;
                             }
                             status[index]['value'] = value;
+                            if (status[index]['value'] == true) {
+                              widget.status(status[index]['meaning']);
+                            } else {
+                              widget.status('');
+                            }
                           });
                         },
                         title: Text(
@@ -249,6 +267,11 @@ class _FiltersState extends State<Filters> {
                               element['value'] = false;
                             }
                             gender[index]['value'] = value;
+                            if (gender[index]['value'] == true) {
+                              widget.gender(gender[index]['meaning']);
+                            } else {
+                              widget.status('');
+                            }
                           });
                         },
                         title: Text(

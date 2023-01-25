@@ -9,9 +9,16 @@ import '../../../resources/svgIcons.dart';
 import '../../../theme/app_colors.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key, required this.onSearch});
+  const SearchScreen({
+    super.key,
+    required this.onSearch,
+    required this.status,
+    required this.gender,
+  });
 
   final Function(String name) onSearch;
+  final Function(String status) status;
+  final Function(String gender) gender;
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -73,7 +80,12 @@ class _SearchScreenState extends State<SearchScreen> {
               IconButton(
                 splashRadius: 0.1,
                 onPressed: () {
-                  Navigator.of(context).push(_createRoute());
+                  Navigator.of(context).push(
+                    _createRoute(
+                      widget.status,
+                      widget.gender,
+                    ),
+                  );
                 },
                 icon: SvgPicture.asset(
                   searchIcon,
@@ -109,9 +121,11 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
-Route _createRoute() {
+Route _createRoute(final Function(String status) status,
+    final Function(String gender) gender) {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => const Filters(),
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        Filters(status: status, gender: gender),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       var begin = const Offset(0.0, 1.0);
       var end = Offset.zero;

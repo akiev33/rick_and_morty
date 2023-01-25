@@ -96,7 +96,7 @@ class _CharacterModelState extends State<CharacterModel> {
     );
   }
 
-  Color statusColor(String text) {
+  Color statusColor(String text) {  
     switch (text) {
       case 'Dead':
         return AppColors.colorEB5757;
