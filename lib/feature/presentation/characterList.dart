@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/domain/entities/filters_characters_entities.dart';
@@ -62,13 +64,14 @@ class _CharacterListState extends State<CharacterList> {
                     BlocProvider.of<UserCubit>(context)
                         .getInfo(filterModel: filterEntity.value);
                   },
-                  status: (status) {
+                  status: (status, id) {
+                    log(id.toString());
                     filterEntity.value =
                         filterEntity.value.copyWith(status: status);
                     BlocProvider.of<UserCubit>(context)
                         .getInfo(filterModel: filterEntity.value);
                   },
-                  gender: (gender) {
+                  gender: (gender, id) {
                     filterEntity.value =
                         filterEntity.value.copyWith(gender: gender);
                     BlocProvider.of<UserCubit>(context)

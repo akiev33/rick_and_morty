@@ -13,8 +13,8 @@ class Filters extends StatefulWidget {
     required this.gender,
   });
 
-  final Function(String status) status;
-  final Function(String gender) gender;
+  final Function(String status, int statusId) status;
+  final Function(String gender, int genderId) gender;
 
   @override
   State<Filters> createState() => _FiltersState();
@@ -215,9 +215,12 @@ class _FiltersState extends State<Filters> {
                             }
                             status[index]['value'] = value;
                             if (status[index]['value'] == true) {
-                              widget.status(status[index]['meaning']);
+                              widget.status(
+                                status[index]['meaning'],
+                                status[index]['id'],
+                              );
                             } else {
-                              widget.status('');
+                              widget.status('', -1);
                             }
                           });
                         },
@@ -268,9 +271,12 @@ class _FiltersState extends State<Filters> {
                             }
                             gender[index]['value'] = value;
                             if (gender[index]['value'] == true) {
-                              widget.gender(gender[index]['meaning']);
+                              widget.gender(
+                                gender[index]['meaning'],
+                                status[index]['id'],
+                              );
                             } else {
-                              widget.status('');
+                              widget.status('', -1);
                             }
                           });
                         },
@@ -297,63 +303,3 @@ class _FiltersState extends State<Filters> {
     );
   }
 }
-
-// class StatusWidget extends StatefulWidget {
-//   const StatusWidget({
-//     super.key,
-//     required this.text,
-//     required this.id,
-//   });
-
-//   final String text;
-//   final int? id;
-
-//   @override
-//   State<StatusWidget> createState() => _StatusWidgetState();
-// }
-
-// class _StatusWidgetState extends State<StatusWidget> {
-//   bool isChecked = false;
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: [
-//         Checkbox(
-//           value: isChecked,
-//           onChanged: (bool? value) {
-//             if (widget.id == 1) {
-//               isChecked = value!;
-//             }
-//             if (widget.id == 2) {
-//               isChecked = value!;
-//             }
-//             if (widget.id == 3) {
-//               isChecked = value!;
-//             }
-//             if (widget.id == 4) {
-//               isChecked = value!;
-//             }
-//             if (widget.id == 5) {
-//               isChecked = value!;
-//             }
-//             if (widget.id == 6) {
-//               isChecked = value!;
-//             }
-//             setState(() {});
-//           },
-//         ),
-        // Text(
-        //   widget.text,
-        //   style: GoogleFonts.roboto(
-        //     textStyle: TextStyle(
-        //       fontWeight: FontWeight.w400,
-        //       fontSize: 16,
-        //       letterSpacing: 0.15,
-        //       color: AppColors.colorFFFFFF,
-        //     ),
-        //   ),
-        // ),
-//       ],
-//     );
-//   }
-// }

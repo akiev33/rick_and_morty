@@ -17,8 +17,8 @@ class SearchScreen extends StatefulWidget {
   });
 
   final Function(String name) onSearch;
-  final Function(String status) status;
-  final Function(String gender) gender;
+  final Function(String status, int statusId) status;
+  final Function(String gender, int genderId) gender;
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -121,11 +121,13 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
-Route _createRoute(final Function(String status) status,
-    final Function(String gender) gender) {
+Route _createRoute(final Function(String status, int statusId) status,
+    final Function(String gender, int genderId) gender) {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) =>
-        Filters(status: status, gender: gender),
+    pageBuilder: (context, animation, secondaryAnimation) => Filters(
+      status: status, 
+      gender: gender,
+    ),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       var begin = const Offset(0.0, 1.0);
       var end = Offset.zero;
