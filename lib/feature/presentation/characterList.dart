@@ -64,14 +64,15 @@ class _CharacterListState extends State<CharacterList> {
                     BlocProvider.of<UserCubit>(context)
                         .getInfo(filterModel: filterEntity.value);
                   },
-                  status: (status, id) {
-                    log(id.toString());
+                  status: (status, statusId) {
+                    log(statusId.toString());
                     filterEntity.value =
                         filterEntity.value.copyWith(status: status);
                     BlocProvider.of<UserCubit>(context)
                         .getInfo(filterModel: filterEntity.value);
                   },
-                  gender: (gender, id) {
+                  gender: (gender, genderId) {
+                    log(genderId.toString());
                     filterEntity.value =
                         filterEntity.value.copyWith(gender: gender);
                     BlocProvider.of<UserCubit>(context)

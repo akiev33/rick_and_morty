@@ -1,11 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:rick_and_morty/feature/presentation/setting_screen/profile_editing/profile_editing.dart';
 import 'package:rick_and_morty/resources/resources.dart';
 import 'package:rick_and_morty/theme/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart' as l;
 
 import '../../../theme/theme_provider.dart';
 
@@ -34,6 +40,28 @@ class _SettingScreenState extends State<SettingScreen> {
         prefs.getStringList('infomation') ?? ['No infomation', 'No login'];
     groupValue = prefs.getInt('radioButtonValue') ?? 0;
     setState(() {});
+  }
+
+  File? image;
+
+  Future pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+      // final imageTemporary = File(image.path);
+      final imagePermanent = await saveImagePermanently(image.path);
+      setState(() => this.image = imagePermanent);
+    } on PlatformException catch (e) {
+      print('Failed to pick Image - $e');
+    }
+  }
+
+  Future<File> saveImagePermanently(String imagePath) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final name = l.basename(imagePath);
+    final image = File('${directory.path}/$name');
+
+    return File(imagePath).copy(imagePath);
   }
 
   @override
@@ -78,7 +106,12 @@ class _SettingScreenState extends State<SettingScreen> {
                   children: [
                     CircleAvatar(
                       radius: 40,
-                      child: Image.asset(Images.avatars),
+                      foregroundImage: FileImage(
+                        File(prefs.getString('avatars') ?? ''),
+                      ),
+                      child: Image.asset(
+                        Images.avatars,
+                      ),
                     ),
                     const SizedBox(width: 16),
                     Column(

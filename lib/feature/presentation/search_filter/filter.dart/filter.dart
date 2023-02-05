@@ -13,8 +13,8 @@ class Filters extends StatefulWidget {
     required this.gender,
   });
 
-  final Function(String status, int statusId) status;
-  final Function(String gender, int genderId) gender;
+  final Function(String status, int id) status;
+  final Function(String gender, int id) gender;
 
   @override
   State<Filters> createState() => _FiltersState();
@@ -273,7 +273,7 @@ class _FiltersState extends State<Filters> {
                             if (gender[index]['value'] == true) {
                               widget.gender(
                                 gender[index]['meaning'],
-                                status[index]['id'],
+                                gender[index]['id'],
                               );
                             } else {
                               widget.status('', -1);

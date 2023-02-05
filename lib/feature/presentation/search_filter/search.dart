@@ -125,7 +125,7 @@ Route _createRoute(final Function(String status, int statusId) status,
     final Function(String gender, int genderId) gender) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => Filters(
-      status: status, 
+      status: status,
       gender: gender,
     ),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
